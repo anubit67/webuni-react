@@ -59,8 +59,8 @@ function App() {
           </tr>
         </thead>
         <tbody>
-        {recipes.map(item => {
-            return (<Receipt key={item.id} name={item.name} ingredients={item.ingredients} instructions={item.instructions} difficulty={item.difficulty} pictureUrl={item.pictureUrl}/>)
+        {recipes.map(recipe => {
+            return (<Receipt key={recipe.id} name={recipe.name} ingredients={recipe.ingredients} instructions={recipe.instructions} difficulty={recipe.difficulty} pictureUrl={recipe.pictureUrl}/>)
           })}
         </tbody>
       </table>
