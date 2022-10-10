@@ -8,6 +8,7 @@ class Receipt extends React.Component {
     this.ingredients = props.ingredients;
     this.instructions = props.instructions;
     this.difficulty = props.difficulty;
+    this.pictureUrl = props.pictureUrl;
   }
 
   render() {return (
@@ -16,6 +17,7 @@ class Receipt extends React.Component {
         <td>{this.ingredients.map(ingredient => ingredient + ', ')}</td>
         <td>{this.instructions}</td>
         <td>{this.difficulty}</td>
+        <td><img src={this.pictureUrl} alt={this.name}></img></td>
       </tr>
   );}
 }

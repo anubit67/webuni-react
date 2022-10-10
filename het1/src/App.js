@@ -11,6 +11,7 @@ function App() {
     ],
     instructions: 'Feltörjük, megsütjük, finom lesz.',
     difficulty: 3,
+    pictureUrl: 'https://kemenytojas.com/wp-content/uploads/rantotta-serpenyoben.jpg' 
   }, {
     id: 2,
     name: 'Chilis bab',
@@ -28,6 +29,7 @@ function App() {
     ],
     instructions: 'Hagymát és fokhagymát felaprítjuk. Az olajat felhevítjük és hozzáadjuk a hagymát és a fokhagymát. Ha már üvegessé vált a hagyma hozzáadjuk a darált húst. Megvárjuk még a hús átsül és utána hozzáadjuk a kukoricát, babot és a paradicsomot. Ezután fűszerezzük meg és keverjük össze. Folyamatos kavargatás mellett főzzük tovább kb 10 percig.',
     difficulty: 4,
+    pictureUrl: 'https://kemenytojas.com/wp-content/uploads/chilis-bab-keszitese-3.jpg'
   }, {
     id: 3,
     name: 'Banánturmix',
@@ -38,10 +40,14 @@ function App() {
     ],
     instructions: 'Pucoljuk meg a banánt és daraboljuk fel majd tegyük bele a turmixgépbe. Adjunk hozzá tetszőleges mennyiségű zabpelyhet. Öntsük hozzá a tejet és turmixoljuk össsze.',
     difficulty: 1,
+    pictureUrl: 'https://www.gasztromanko.hu/wp-content/uploads/bananturmix-2.jpg'
   }
 ];
   return (
     <div>
+      <header>
+        <h1>Receptkönyv</h1>
+      </header>
       <table>
         <thead>
           <tr>
@@ -54,7 +60,7 @@ function App() {
         </thead>
         <tbody>
         {recipes.map(item => {
-            return (<Receipt key={item.id} name={item.name} ingredients={item.ingredients} instructions={item.instructions} difficulty={item.difficulty}/>)
+            return (<Receipt key={item.id} name={item.name} ingredients={item.ingredients} instructions={item.instructions} difficulty={item.difficulty} pictureUrl={item.pictureUrl}/>)
           })}
         </tbody>
       </table>
