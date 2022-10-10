@@ -1,4 +1,3 @@
-import './App.css';
 import Receipt from './receipt';
 
 function App() {
@@ -43,28 +42,26 @@ function App() {
     pictureUrl: 'https://www.gasztromanko.hu/wp-content/uploads/bananturmix-2.jpg'
   }
 ];
-  return (
-    <div>
-      <header>
-        <h1>Receptkönyv</h1>
-      </header>
-      <table>
-        <thead>
-          <tr>
-            <th>name</th>
-            <th>ingredients</th>
-            <th>instructions</th>
-            <th>difficulty</th>
-            <th>picture</th>
-          </tr>
-        </thead>
-        <tbody>
-        {recipes.map(recipe => {
-            return (<Receipt key={recipe.id} name={recipe.name} ingredients={recipe.ingredients} instructions={recipe.instructions} difficulty={recipe.difficulty} pictureUrl={recipe.pictureUrl}/>)
-          })}
-        </tbody>
-      </table>
-    </div>
+return (
+  <div className='App'>
+    <header>
+      <h1>Receptkönyv</h1>
+    </header>
+    <table>
+      <thead>
+        <tr>
+          <th>Név</th>
+          <th>Hozzávalók</th>
+          <th>Elkészítés</th>
+          <th>Nehézség</th>
+          <th>Kép</th>
+        </tr>
+      </thead>
+      <tbody>
+        {recipes.map(recipe => (<Receipt key={recipe.id} name={recipe.name} ingredients={recipe.ingredients} instructions={recipe.instructions} difficulty={recipe.difficulty} pictureUrl={recipe.pictureUrl}/>))}
+      </tbody>
+    </table>
+  </div>
   );
 }
 

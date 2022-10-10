@@ -1,4 +1,3 @@
-import './App.css';
 import Ingredient from './ingredient';
 
 function Receipt({name, ingredients, instructions, difficulty, pictureUrl}) {

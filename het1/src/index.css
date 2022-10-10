@@ -15,3 +15,23 @@ code {
 img {
   width: 320px;
 }
+
+th {
+  text-align: left;
+  padding: 10px;
+}
+
+td {
+  padding: 10px;
+}
+
+.App {
+  background-color: wheat;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: black;
+}
