@@ -7,9 +7,9 @@ function Recipe({
     <tr>
       <td>{name}</td>
       <td>
-        {ingredients.map((ingredient) => (
+        {ingredients.map((ingredient, index) => (
           <Ingredient
-            key={Math.random()}
+            key={index}
             ingredient={ingredient}
           />
         ))}
