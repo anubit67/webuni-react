@@ -1,36 +1,61 @@
-import Card from './card';
+import { useEffect, useState } from 'react';
+import Card from './Card';
+import { cards } from './card-generator';
 
-function CardTable() {  
-  const suits = {
-    hearts: 'hearts',
-    clubs: 'clubs',
-    diamonds: 'diamonds',
-    spades: 'spades',
-  };
+function CardTable({ setCompleted }) {
+  const [previousCard, setPreviousCard] = useState(null);
+  const [currentCard, setCurrentCard] = useState(null);
+  const [reset, setReset] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
-  const generateCards = () => {
-    const cards = [];
-    for (const key in suits) {
-      for (let i = 0; i < 2; i++) {
-        cards.push(suits[key]);
+  const [numOfVisibleCards, setNumOfVisibleCards] = useState(0);
+
+  useEffect(() => {
+    setPreviousCard(currentCard);
+
+    if (numOfVisibleCards > 0 && numOfVisibleCards % 2 === 0) {
+      if (previousCard !== null && currentCard !== null && previousCard === currentCard) {
+        setCurrentCard(null);
+        setPreviousCard(null);
+      } else if (numOfVisibleCards > 0) {
+        setTimeout(() => {
+          setReset(!reset);
+          setNumOfVisibleCards(0);
+          setCurrentCard(null);
+          setPreviousCard(null);
+          setDisabled(false);
+        }, 1000);
+        setDisabled(true);
       }
     }
-    return cards;
-  }
 
-  const shuffleCards = (arr) => arr.sort(() => Math.random() - 0.5);
-  
-  const cards = shuffleCards(generateCards());
+    if (numOfVisibleCards === 8) {
+      setCompleted(true);
+    }
+  }, [numOfVisibleCards]);
 
-  return (<div className="cardTable">
-    <table>
-      <tbody>
-        <tr>
-          {cards.map((suit, index) => <Card key={index} suit={suit}></Card>)}
-        </tr>
-      </tbody>
-    </table>
-  </div>)
+  return (
+    <div className="cardTable">
+      <table>
+        <tbody>
+          <tr>
+            {cards.map((suit, index) => (
+              <Card
+                // eslint-disable-next-line react/no-array-index-key
+                key={index}
+                suit={suit}
+                setCurrentCard={setCurrentCard}
+                reset={reset}
+                setNumOfVisibleCards={setNumOfVisibleCards}
+                numOfVisibleCards={numOfVisibleCards}
+                disabled={disabled}
+              />
+            ))}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
 export default CardTable;
