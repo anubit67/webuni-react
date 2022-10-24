@@ -20,7 +20,7 @@ function Card({
   useEffect(() => {
     if (visible) {
       setCurrentCard(suit);
-      setNumOfVisibleCards(++numOfVisibleCards);
+      setNumOfVisibleCards(numOfVisibleCards += 1);
     }
   }, [visible]);
 

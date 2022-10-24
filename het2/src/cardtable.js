@@ -7,7 +7,6 @@ function CardTable({ setCompleted }) {
   const [currentCard, setCurrentCard] = useState(null);
   const [reset, setReset] = useState(false);
   const [disabled, setDisabled] = useState(false);
-
   const [numOfVisibleCards, setNumOfVisibleCards] = useState(0);
 
   useEffect(() => {
