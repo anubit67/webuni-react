@@ -1,18 +1,18 @@
 const data = [
   {
-    equipment: 'Canon EOS 6D Mark II',
+    equipment: 'Canon EOS 6D Mark I',
     name: 'Joe',
     subject: 'Tree',
   },
   {
     equipment: 'Canon EOS 6D Mark II',
-    name: 'Joe',
+    name: 'John',
     subject: 'House',
   },
   {
-    equipment: 'Canon EOS 6D Mark II',
-    name: 'Joe',
-    subject: 'Whatever',
+    equipment: 'Canon EOS 6D Mark III',
+    name: 'Josh',
+    subject: 'Lady',
   },
 ];
 

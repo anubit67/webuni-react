@@ -1,89 +1,68 @@
 import {
-  // eslint-disable-next-line max-len
-  Container, Grid, Paper, Card, CardMedia, CardContent, CardActions, Button, TextField, Select, MenuItem, TableContainer, Table, TableHead, TableCell, TableRow, TableBody,
+  Container, Grid, Paper, Table, TableHead, TableCell, TableRow, TableBody,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import data from './data';
-import TableData from './Table';
+import TableData from './TableData';
+import Picture from './Picture';
+import MyForm from './MyForm';
 
 function App() {
-  const [equipment, setEquipment] = useState('');
-  const [name, setName] = useState('');
-  const [subject, setSubject] = useState('');
   const [tableData, setTableData] = useState(data);
+  const gridStyles = {
+    paddingBottom: 2,
+    paddingRight: 2,
+    marginTop: 2,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  };
+
+  const onRemove = (index) => setTableData(tableData.filter((item) => item.index !== index));
+  const addIndex = () => setTableData(tableData.map((record, index) => ({ ...record, index })));
 
   useEffect(() => {
+    addIndex();
   }, [tableData.length]);
 
   return (
-    <Container maxWidth="lg">
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={9} lg={9}>
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Equipment</TableCell>
-                  <TableCell>Taken by</TableCell>
-                  <TableCell>Subject</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {tableData.map((record, index) => (
-                  <TableData
-                    // eslint-disable-next-line react/no-array-index-key
-                    key={index}
-                    equipment={record.equipment}
-                    name={record.name}
-                    subject={record.subject}
-                  />
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Grid>
-        <Grid item xs={12} md={3} lg={3}>
-          <Card elevation={5}>
-            <CardMedia component="img" height="140" image="https://www.hdrshooter.com/wp-content/uploads/2014/01/Budapest-IMG_2755-web.jpg" />
-            <CardContent>Budapest at night</CardContent>
-            <CardActions><Button>Details</Button></CardActions>
-          </Card>
-          <Card elevation={5}>
-            <CardMedia component="img" height="140" image="https://sumfinity.com/wp-content/uploads/2013/11/Prague-Castle-at-Night-Czech-Republic.jpg" />
-            <CardContent>Prague at night</CardContent>
-            <CardActions><Button>Details</Button></CardActions>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={9} lg={9} component={Paper}>
-          <Grid item xs={12} md={6} lg={6}>
-            <TextField fullWidth label="Equipment" value={equipment} onChange={(e) => setEquipment(e.target.value)} />
-            <Select fullWidth value={name} label="Taken by" onChange={(e) => setName(e.target.value)}>
-              <MenuItem value="John">John</MenuItem>
-              <MenuItem value="Mark">Mark</MenuItem>
-            </Select>
+    <div className="App">
+      <Container maxWidth="lg">
+        <Grid container spacing={2} sx={{ alignItems: 'flex-start', marginTop: 1 }}>
+          <Grid container item xs={12} md={8} lg={8}>
+            <Grid item xs={12} md={12} lg={12} component={Paper} elevation={3}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Equipment</TableCell>
+                    <TableCell>Taken by</TableCell>
+                    <TableCell>Subject</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {tableData.map((record, index) => (
+                    <TableData
+                      key={index}
+                      index={record.index}
+                      equipment={record.equipment}
+                      name={record.name}
+                      subject={record.subject}
+                      onRemove={onRemove}
+                    />
+                  ))}
+                </TableBody>
+              </Table>
+            </Grid>
+            <Grid container spacing={2} component={Paper} elevation={3} sx={gridStyles}>
+              <MyForm tableData={tableData} setTableData={setTableData} />
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={12} lg={12}>
-            <TextField fullWidth label="Subject" value={subject} onChange={(e) => setSubject(e.target.value)} />
-          </Grid>
-          <Grid item xs={12} md={6} lg={6}>
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={() => {
-                setTableData([...tableData, {
-                  equipment,
-                  name,
-                  subject,
-                }]);
-              }}
-            >
-              Add new image
-            </Button>
-            <Button fullWidth variant="contained" color="error">Cancel</Button>
+          <Grid container item spacing={2} xs={12} md={4} lg={4}>
+            <Picture title="Budapest at night" imageUrl="https://www.voubs.com/original/photo/19d/Beautiful+Budapest+Chain+Bridge+and+Buda+Castle+at+night._de604fc6dea2cee0bbaafb522b149c2b.jpg" />
+            <Picture title="Prague at night" imageUrl="https://sumfinity.com/wp-content/uploads/2013/11/Prague-Castle-at-Night-Czech-Republic.jpg" />
           </Grid>
         </Grid>
-      </Grid>
-    </Container>
+      </Container>
+    </div>
   );
 }
 
