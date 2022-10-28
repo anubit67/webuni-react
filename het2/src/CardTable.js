@@ -1,58 +1,49 @@
 import { useEffect, useState } from 'react';
-import Card from './Card';
+import { Grid, ImageList, ImageListItem } from '@mui/material';
 import { cards } from './card-generator';
+import cardBack from './assets/cards/card-back1.png';
 
-function CardTable({ setCompleted }) {
-  const [previousCard, setPreviousCard] = useState(null);
-  const [currentCard, setCurrentCard] = useState(null);
-  const [reset, setReset] = useState(false);
+function CardTable({ setCompleted, hardMode }) {
   const [disabled, setDisabled] = useState(false);
-  const [numOfVisibleCards, setNumOfVisibleCards] = useState(0);
+  const [visibleCards, setVisibleCards] = useState([]);
+
+  const isVisible = (idx) => visibleCards.includes(idx);
+
+  const cardClick = (idx) => setVisibleCards([...visibleCards, idx]);
 
   useEffect(() => {
-    setPreviousCard(currentCard);
-
-    if (numOfVisibleCards > 0 && numOfVisibleCards % 2 === 0) {
-      if (previousCard !== null && currentCard !== null && previousCard === currentCard) {
-        setCurrentCard(null);
-        setPreviousCard(null);
-      } else if (numOfVisibleCards > 0) {
+    if (visibleCards.length > 0 && visibleCards.length % 2 === 0) {
+      const currentCard = cards[visibleCards[visibleCards.length - 1]];
+      const lastCard = cards[visibleCards[visibleCards.length - 2]];
+      if (!(lastCard === currentCard)) {
         setTimeout(() => {
-          setReset(!reset);
-          setNumOfVisibleCards(0);
-          setCurrentCard(null);
-          setPreviousCard(null);
+          if (hardMode) {
+            setVisibleCards([]);
+          } else {
+            setVisibleCards(visibleCards.slice(0, visibleCards.length - 2));
+          }
           setDisabled(false);
         }, 1000);
         setDisabled(true);
       }
     }
-
-    if (numOfVisibleCards === 8) {
+    if (visibleCards.length === 8) {
       setCompleted(true);
     }
-  }, [numOfVisibleCards]);
+  }, [visibleCards.length]);
 
   return (
     <div className="cardTable">
-      <table>
-        <tbody>
-          <tr>
-            {cards.map((suit, index) => (
-              <Card
-                // eslint-disable-next-line react/no-array-index-key
-                key={index}
-                suit={suit}
-                setCurrentCard={setCurrentCard}
-                reset={reset}
-                setNumOfVisibleCards={setNumOfVisibleCards}
-                numOfVisibleCards={numOfVisibleCards}
-                disabled={disabled}
-              />
-            ))}
-          </tr>
-        </tbody>
-      </table>
+      <Grid container direction="row" justifyContent="center" columnGap={{ xs: 0, md: 3 }}>
+        <ImageList cols={4}>
+          {cards.map((card, idx) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <ImageListItem key={idx}>
+              <img src={isVisible(idx) ? card : cardBack} alt="card" onClick={isVisible(idx) || disabled ? () => {} : () => cardClick(idx)} aria-hidden="true" />
+            </ImageListItem>
+          ))}
+        </ImageList>
+      </Grid>
     </div>
   );
 }

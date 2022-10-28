@@ -1,3 +1,4 @@
+import { Button, Grid, Typography } from '@mui/material';
 import { shuffleCards } from './card-generator';
 
 function Congratulations({ setCompleted }) {
@@ -8,8 +9,12 @@ function Congratulations({ setCompleted }) {
 
   return (
     <div className="congratulations">
-      <h1>Congratulations! You did it.</h1>
-      <button type="button" onClick={() => restartGame()}>PLAY AGAIN</button>
+      <Grid container justifyContent="center" rowGap={5}>
+        <Typography variant="h4">Gratulálok!</Typography>
+        <Grid container justifyContent="center">
+          <Button variant="contained" onClick={restartGame}>Új játék</Button>
+        </Grid>
+      </Grid>
     </div>
   );
 }
