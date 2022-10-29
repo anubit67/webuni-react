@@ -1,10 +1,11 @@
 {
   "files": {
-    "main.js": "/webuni-react/het3/static/js/main.7158a6d3.js",
-    "index.html": "/webuni-react/het3/index.html",
-    "main.7158a6d3.js.map": "/webuni-react/het3/static/js/main.7158a6d3.js.map"
+    "main.js": "/webuni-react/static/js/main.44d47177.js",
+    "static/media/card-back1.png": "/webuni-react/static/media/card-back1.502e98463c5d144a8c1f.png",
+    "index.html": "/webuni-react/index.html",
+    "main.44d47177.js.map": "/webuni-react/static/js/main.44d47177.js.map"
   },
   "entrypoints": [
-    "static/js/main.7158a6d3.js"
+    "static/js/main.44d47177.js"
   ]
 }
