@@ -39,7 +39,7 @@ function CardTable({ setCompleted, hardMode }) {
           {cards.map((card, idx) => (
             // eslint-disable-next-line react/no-array-index-key
             <ImageListItem key={idx}>
-              <img src={isVisible(idx) ? card : cardBack} alt="card" onClick={isVisible(idx) || disabled ? () => {} : () => cardClick(idx)} aria-hidden="true" />
+              <img src={isVisible(idx) ? card : cardBack} alt="card" onClick={isVisible(idx) || disabled ? () => {} : () => cardClick(idx)} aria-hidden="true" loading="lazy" />
             </ImageListItem>
           ))}
         </ImageList>
