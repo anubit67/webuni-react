@@ -23,7 +23,11 @@ function DogCards({ dogs, setDogs, setTargetDog }) {
           />
         ))}
       </Grid>
-      <Button variant="contained" onClick={() => navigate('/new')}>Add dog</Button>
+      <Grid container spacing={2}>
+        <Grid item lg={3} md={4} xs={12}>
+          <Button variant="contained" onClick={() => navigate('/new')} fullWidth sx={{ marginTop: 2 }}>Add dog</Button>
+        </Grid>
+      </Grid>
     </Container>
   );
 }

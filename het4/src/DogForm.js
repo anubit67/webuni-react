@@ -12,6 +12,7 @@ function DogForm({
   const navigate = useNavigate();
 
   const removeTargetDog = () => dogs.filter((dog) => dog.id !== targetDog.id);
+  const isAnyFieldEmpty = () => name.length !== 0 && url.length !== 0;
 
   const handleSave = () => {
     if (targetDog !== null) {
@@ -37,7 +38,7 @@ function DogForm({
           <TextField label="Picture url" value={url} onChange={(e) => setUrl(e.target.value)} />
         </Grid>
         <Grid item xs={12} md={4} lg={3}>
-          <Button variant="contained" onClick={handleSave}>Save</Button>
+          <Button variant="contained" onClick={() => (isAnyFieldEmpty() ? handleSave() : () => {})}>Save</Button>
         </Grid>
       </Grid>
     </Container>
