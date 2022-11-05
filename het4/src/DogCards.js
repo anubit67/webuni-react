@@ -4,9 +4,8 @@ import {
 import { useNavigate } from 'react-router-dom';
 import DogCard from './DogCard';
 
-function DogCards({ dogs, setDogs }) {
+function DogCards({ dogs, setDogs, setTargetDog }) {
   const navigate = useNavigate();
-
   const onDelete = (id) => setDogs(dogs.filter((dog) => id !== dog.id));
 
   return (
@@ -20,6 +19,7 @@ function DogCards({ dogs, setDogs }) {
             key={dog.id}
             id={dog.id}
             onDelete={onDelete}
+            setTargetDog={setTargetDog}
           />
         ))}
       </Grid>
