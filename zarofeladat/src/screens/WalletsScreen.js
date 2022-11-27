@@ -1,17 +1,17 @@
-/* eslint-disable */
-
-import { Grid } from '@mui/material';
+/* eslint-disable react/jsx-no-bind */
+import { CircularProgress, Fab, Grid } from '@mui/material';
 import { Container } from '@mui/system';
-import MenuBar from '../components/MenuBar';
-import Wallet from '../components/Wallet';
 import AddIcon from '@mui/icons-material/Add';
 import React from 'react';
-import WalletDialog from '../Dialogs/WalletDialog';
-
-const wallets = [{name: 'wallet1', balance: 1000}, {name: 'wallet2', balance: 2000}, {name: 'wallet3', balance: 3000}, {name: 'wallet4', balance: 4000}];
+import MenuBar from '../components/MenuBar';
+import Wallet from '../components/Wallet';
+import AddWalletDialog from '../Dialogs/AddWalletDialog';
+import { AXIOS_METHOD, doApiCall, useApi } from '../hooks/useApi';
 
 export default function WalletsScreen() {
   const [open, setOpen] = React.useState(false);
+  const [somethingChanged, setSomethingChanged] = React.useState(false);
+  const [data, loading] = useApi(AXIOS_METHOD.GET, '/wallets', false, [somethingChanged]);
 
   function handleOpen() {
     setOpen(true);
@@ -21,19 +21,43 @@ export default function WalletsScreen() {
     setOpen(false);
   }
 
+  function handleDelete(id) {
+    const onSuccess = () => {
+      setSomethingChanged(!somethingChanged);
+      handleClose();
+    };
+
+    doApiCall(AXIOS_METHOD.DELETE, `/wallet/${id}`, onSuccess, () => handleClose());
+  }
+
   return (
     <Container>
       <Grid container spacing={2}>
         <Grid item lg={12} md={12} xs={12}>
-          <MenuBar/>
+          <MenuBar />
         </Grid>
-        { wallets.map((wallet, idx) => {
-          return <Wallet key={idx} name={wallet.name} balance={wallet.balance}/>
-          })
-        }
+        { loading ? <CircularProgress /> : data.map((d) => (
+          <Wallet
+            key={d.id}
+            name={d.name}
+            description={d.description}
+            balance={d.balance}
+            id={d.id}
+            handleEvent={() => handleDelete(d.id)}
+            somethingChanged={somethingChanged}
+            setSomethingChanged={setSomethingChanged}
+          />
+        ))}
         <Grid item>
-          <AddIcon onClick={handleOpen}></AddIcon>
-          <WalletDialog open={open} handleClose={handleClose}></WalletDialog>
+          <Fab color="primary" aria-label="add">
+            <AddIcon onClick={handleOpen} />
+          </Fab>
+          <AddWalletDialog
+            open={open}
+            handleClose={handleClose}
+            somethingChanged={somethingChanged}
+            setSomethingChanged={setSomethingChanged}
+          />
         </Grid>
       </Grid>
     </Container>

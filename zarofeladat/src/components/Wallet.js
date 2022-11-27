@@ -6,18 +6,42 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import React from 'react';
+import { Box } from '@mui/system';
 import ConfirmDialog from './ConfirmDialog';
+import WalletDialog from '../Dialogs/WalletDialog';
+import ModifyWalletDialog from '../Dialogs/ModifyWalletDialog';
 
-export default function Wallet({ name, balance }) {
+export default function Wallet({
+  name, balance, id, handleEvent, somethingChanged, setSomethingChanged,
+}) {
   const [openDelete, setOpenDelete] = React.useState(false);
+  const [openDetails, setOpenDetails] = React.useState(false);
+  const [openEdit, setOpenEdit] = React.useState(false);
 
-  function handleOpenDelete() {
+  function handleDeleteOpen() {
     setOpenDelete(true);
   }
 
-  function handleCloseDelete() {
+  function handleDeleteClose() {
     setOpenDelete(false);
+  }
+
+  function handleDetailsOpen() {
+    setOpenDetails(true);
+  }
+
+  function handleDetailsClose() {
+    setOpenDetails(false);
+  }
+
+  function handleEditOpen() {
+    setOpenEdit(true);
+  }
+
+  function handleEditClose() {
+    setOpenEdit(false);
   }
 
   return (
@@ -34,9 +58,19 @@ export default function Wallet({ name, balance }) {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button onClick={console.log()}>Details</Button>
-          <DeleteIcon onClick={handleOpenDelete} />
-          <ConfirmDialog title={`Are you sure you want to delete ${name}?`} open={openDelete} handleClose={handleCloseDelete} />
+          <Button onClick={handleDetailsOpen}>Details</Button>
+          <WalletDialog name={name} open={openDetails} handleClose={handleDetailsClose} />
+          <Box sx={{ flexGrow: 1 }} />
+          <EditIcon onClick={handleEditOpen} />
+          <ModifyWalletDialog
+            id={id}
+            open={openEdit}
+            handleClose={handleEditClose}
+            somethingChanged={somethingChanged}
+            setSomethingChanged={setSomethingChanged}
+          />
+          <DeleteIcon onClick={handleDeleteOpen} />
+          <ConfirmDialog title={`Are you sure you want to delete ${name}?`} open={openDelete} handleClose={handleDeleteClose} handleEvent={handleEvent} id={id} />
         </CardActions>
       </Card>
     </Grid>

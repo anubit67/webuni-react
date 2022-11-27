@@ -1,14 +1,18 @@
-/* eslint-disable */
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Card, Container, Grid, Typography } from '@mui/material';
+import {
+  Button, Card, Container, Grid, Typography,
+} from '@mui/material';
 import {
   Formik, Form, Field,
 } from 'formik';
 import { TextField } from 'formik-mui';
 import RegistrationDialog from '../Dialogs/RegistrationDialog';
+import { doApiCall, AXIOS_METHOD } from '../hooks/useApi';
+import { useAuth } from '../hooks/useAuth';
 
 export default function LoginScreen() {
+  const { handleLoginResult } = useAuth();
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
 
@@ -21,18 +25,29 @@ export default function LoginScreen() {
   };
 
   return (
-    <Formik  initialValues={{
-      username: '', password: ''
-    }}
-    onSubmit={(values, formik) => {
-      formik.setSubmitting(true);
-      setTimeout(() => {
-        formik.setSubmitting(false);
-        navigate('/wallets');
-      }, 1000);
-    }}>
+    <Formik
+      initialValues={{
+        name: '', password: '',
+      }}
+      onSubmit={(values, { setFieldError, setSubmitting }) => {
+        setSubmitting(true);
+
+        const onFailure = (apiError) => {
+          setFieldError('name', apiError);
+          setSubmitting(false);
+        };
+
+        const onSuccess = (data) => {
+          handleLoginResult(data);
+          setSubmitting(false);
+          navigate('/wallets');
+        };
+
+        doApiCall(AXIOS_METHOD.POST, '/login', onSuccess, onFailure, values);
+      }}
+    >
       <Form>
-        <Container maxWidth="lg" >
+        <Container maxWidth="lg">
           <Grid container spacing={2} paddingTop="25%">
             <Grid item lg={8} md={6} xs={12}>
               <Grid container spacing={2} direction="column">
@@ -48,17 +63,17 @@ export default function LoginScreen() {
               <Card elevation={3}>
                 <Grid container spacing={2} direction="column" p={1}>
                   <Grid item lg={3} md={4} xs={12}>
-                    <Field name="username" type="textfield" component={TextField} label="Username" variant="outlined" fullWidth/>
+                    <Field name="name" type="textfield" component={TextField} label="Username" variant="outlined" fullWidth />
                   </Grid>
                   <Grid item lg={3} md={4} xs={12}>
-                    <Field name="password" type="textfield" component={TextField} label="Password" variant="outlined" fullWidth/>
+                    <Field name="password" type="textfield" component={TextField} label="Password" variant="outlined" fullWidth />
                   </Grid>
                   <Grid item lg={3} md={4} xs={12}>
                     <Button type="submit" variant="contained" fullWidth>Login</Button>
                   </Grid>
                   <Grid item lg={3} md={4} xs={12}>
                     <Button variant="contained" color="success" fullWidth onClick={handleClickOpen}>Register</Button>
-                    <RegistrationDialog open={open} onClose={handleClose}></RegistrationDialog>
+                    <RegistrationDialog open={open} onClose={handleClose} />
                   </Grid>
                 </Grid>
               </Card>

@@ -6,11 +6,14 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { useAuth } from '../hooks/useAuth';
 
 function MenuBar() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
-  function logout() {
+  function handleLogout() {
+    logout();
     navigate('/');
   }
 
@@ -28,7 +31,7 @@ function MenuBar() {
           >
             Wallet App
           </Typography>
-          <LogoutIcon fontSize="medium" onClick={logout} />
+          <LogoutIcon fontSize="medium" onClick={handleLogout} />
         </Toolbar>
       </AppBar>
     </Box>

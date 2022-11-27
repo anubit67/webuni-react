@@ -8,8 +8,11 @@ import {
   Formik, Form, Field, ErrorMessage
 } from 'formik';
 import { TextField, CheckboxWithLabel } from 'formik-mui';
+import { doApiCall, AXIOS_METHOD } from '../hooks/useApi';
+import { useAuth } from "../hooks/useAuth";
 
 export default function RegistrationDialog({ open, onClose }) {
+  const { handleLoginResult } = useAuth();
   const navigate = useNavigate();
 
   function usermameValidator(value) {
@@ -52,18 +55,28 @@ export default function RegistrationDialog({ open, onClose }) {
     <Dialog open={open} onClose={onClose} PaperProps={{ sx: { width: "25%", height: "auto" } }}>
       <Formik
         initialValues={{
-          username: '',
+          name: '',
           password: '',
           passwordAgain: '',
           legal: false
         }}
-        onSubmit={(values, formik) => {
-          formik.setSubmitting(true);
-          setTimeout(() => {
-            formik.setSubmitting(false);
-            navigate('/wallets');
-          }, 1000);
-        }}
+        onSubmit={(values, {setFieldError, setSubmitting}) => {
+          setSubmitting(true);
+          
+          const onFailure = (apiError) => {
+            setFieldError('name', apiError);
+            setSubmitting(false);
+          };
+
+          doApiCall(AXIOS_METHOD.POST, '/reg', (_unusedRegData) => {
+              doApiCall(AXIOS_METHOD.POST, '/login', (data) => {
+                handleLoginResult(data);
+                setSubmitting(false);
+                onClose();
+                navigate('/wallets');
+              }, onFailure, values);
+          }, onFailure, values);
+      }}
         validate={passwordAgainValidator}
       >
         <Form>
@@ -71,7 +84,7 @@ export default function RegistrationDialog({ open, onClose }) {
           <DialogContent>
             <DialogContentText>You have to register before continuing</DialogContentText>
             <Typography variant="h5" textAlign="center"></Typography>
-            <Field name="username" validate={usermameValidator} type="textfield" component={TextField} label="Username" variant="filled" fullWidth />
+            <Field name="name" validate={usermameValidator} type="textfield" component={TextField} label="Username" variant="filled" fullWidth />
             <Field name="password" validate={passwordValidator} type="textfield" component={TextField} label="Password" variant="filled" fullWidth />
             <Field name="passwordAgain" validate={passwordAgainValidator} type="textfield" component={TextField} label="Password again" variant="filled" fullWidth />
             <Field
