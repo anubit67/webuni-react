@@ -82,11 +82,10 @@ export default function RegistrationDialog({ open, onClose }) {
         <Form>
           <DialogTitle>Sign Up</DialogTitle>
           <DialogContent>
-            <DialogContentText>You have to register before continuing</DialogContentText>
             <Typography variant="h5" textAlign="center"></Typography>
-            <Field name="name" validate={usermameValidator} type="textfield" component={TextField} label="Username" variant="filled" fullWidth />
-            <Field name="password" validate={passwordValidator} type="textfield" component={TextField} label="Password" variant="filled" fullWidth />
-            <Field name="passwordAgain" validate={passwordAgainValidator} type="textfield" component={TextField} label="Password again" variant="filled" fullWidth />
+            <Field name="name" validate={usermameValidator} type="textfield" component={TextField} label="Username" variant="outlined" fullWidth />
+            <Field name="password" validate={passwordValidator} type="textfield" component={TextField} label="Password" variant="outlined" fullWidth />
+            <Field name="passwordAgain" validate={passwordAgainValidator} type="textfield" component={TextField} label="Password again" variant="outlined" fullWidth />
             <Field
               component={CheckboxWithLabel}
               type="checkbox"

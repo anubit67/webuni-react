@@ -1,12 +1,14 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { setApiToken } from './useApi';
+import useLocalStorage from './useLocalStorage';
 
 const AuthContext = React.createContext();
 AuthContext.displayName = 'AuthContext';
 
 export function AuthContextProvider({ children }) {
-  const [authToken, setAuthToken] = useState(false);
-  const [sessionUser, setSessionUser] = useState({});
+  const [authToken, setAuthToken] = useLocalStorage('token', false);
+  const [sessionUser, setSessionUser] = useLocalStorage('session', {});
+  setApiToken(authToken);
 
   const handleLoginResult = useCallback(
     (loginResult) => {
