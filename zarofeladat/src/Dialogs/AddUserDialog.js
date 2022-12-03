@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-no-bind */
-/* eslint-disable consistent-return */
 import React from 'react';
 import {
   Button, Dialog, DialogActions, DialogContent, DialogTitle,
@@ -10,12 +9,13 @@ import {
 import { TextField } from 'formik-mui';
 import { AXIOS_METHOD, doApiCall } from '../hooks/useApi';
 
-export default function ModifyWalletDialog({
-  id, open, handleClose, forceWalletRefresh,
+export default function AddNewUserDialog({
+  open, handleClose, id, forceUsersRefresh,
 }) {
-  function validator(value) {
+  // eslint-disable-next-line consistent-return
+  function nameValidator(value) {
     if (!value && value.length === 0) {
-      return 'Field must not be empty';
+      return 'User must not be empty';
     }
   }
 
@@ -24,14 +24,13 @@ export default function ModifyWalletDialog({
       <Formik
         initialValues={{
           name: '',
-          description: '',
         }}
-        onSubmit={(values, { setSubmitting, setFieldError }) => {
+        onSubmit={(name, { setSubmitting, setFieldError }) => {
           setSubmitting(true);
 
           const onSuccess = () => {
             setSubmitting(false);
-            forceWalletRefresh();
+            forceUsersRefresh();
             handleClose();
           };
 
@@ -40,14 +39,18 @@ export default function ModifyWalletDialog({
             setFieldError('name', apiError);
           };
 
-          doApiCall(AXIOS_METHOD.PATCH, `/wallet/${id}`, onSuccess, onFailure, values);
+          console.log(name);
+          doApiCall(AXIOS_METHOD.POST, '/user/search', (userId) => {
+            console.log(userId);
+            doApiCall(AXIOS_METHOD.POST, `/wallet/${id}/grant_access`, onSuccess, onFailure, { user_id: userId });
+          }, false, name);
         }}
         validate={console.log}
       >
         <Form>
-          <DialogTitle>Modify wallet</DialogTitle>
+          <DialogTitle>Add user</DialogTitle>
           <DialogContent>
-            <Field name="description" type="textfield" component={TextField} label="Description" variant="outlined" fullWidth validate={validator} />
+            <Field name="name" validate={nameValidator} type="textfield" component={TextField} label="Wallet name" variant="outlined" fullWidth />
           </DialogContent>
           <DialogActions>
             <Button type="submit" variant="contained" fullWidth>Add</Button>

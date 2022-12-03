@@ -1,5 +1,7 @@
 /* eslint-disable react/jsx-no-bind */
-import { CircularProgress, Fab, Grid } from '@mui/material';
+import {
+  CircularProgress, Fab, Grid, Typography,
+} from '@mui/material';
 import { Container } from '@mui/system';
 import AddIcon from '@mui/icons-material/Add';
 import React from 'react';
@@ -10,8 +12,7 @@ import { AXIOS_METHOD, doApiCall, useApi } from '../hooks/useApi';
 
 export default function WalletsScreen() {
   const [open, setOpen] = React.useState(false);
-  const [somethingChanged, setSomethingChanged] = React.useState(false);
-  const [data, loading] = useApi(AXIOS_METHOD.GET, '/wallets', false, [somethingChanged]);
+  const [data, loading, error, forceWalletRefresh] = useApi(AXIOS_METHOD.GET, '/wallets', false);
 
   function handleOpen() {
     setOpen(true);
@@ -23,15 +24,19 @@ export default function WalletsScreen() {
 
   function handleDelete(id) {
     const onSuccess = () => {
-      setSomethingChanged(!somethingChanged);
+      forceWalletRefresh();
       handleClose();
     };
 
     doApiCall(AXIOS_METHOD.DELETE, `/wallet/${id}`, onSuccess, () => handleClose());
   }
 
+  if (error) {
+    return <Typography>{error}</Typography>;
+  }
+
   return (
-    <Container>
+    <Container maxWidth="lg">
       <Grid container spacing={2}>
         <Grid item lg={12} md={12} xs={12}>
           <MenuBar />
@@ -44,8 +49,7 @@ export default function WalletsScreen() {
             balance={d.balance}
             id={d.id}
             handleEvent={() => handleDelete(d.id)}
-            somethingChanged={somethingChanged}
-            setSomethingChanged={setSomethingChanged}
+            forceWalletRefresh={forceWalletRefresh}
           />
         ))}
         <Grid item>
@@ -55,8 +59,7 @@ export default function WalletsScreen() {
           <AddWalletDialog
             open={open}
             handleClose={handleClose}
-            somethingChanged={somethingChanged}
-            setSomethingChanged={setSomethingChanged}
+            forceWalletRefresh={forceWalletRefresh}
           />
         </Grid>
       </Grid>

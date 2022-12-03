@@ -10,7 +10,7 @@ import { TextField } from 'formik-mui';
 import { AXIOS_METHOD, doApiCall } from '../hooks/useApi';
 
 export default function AddWalletDialog({
-  open, handleClose, somethingChanged, setSomethingChanged,
+  open, handleClose, forceWalletRefresh,
 }) {
   // eslint-disable-next-line consistent-return
   function nameValidator(value) {
@@ -31,7 +31,7 @@ export default function AddWalletDialog({
 
           const onSuccess = () => {
             setSubmitting(false);
-            setSomethingChanged(!somethingChanged);
+            forceWalletRefresh();
             handleClose();
           };
 

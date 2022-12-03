@@ -7,18 +7,18 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import React from 'react';
+import { useState } from 'react';
 import { Box } from '@mui/system';
+import { useNavigate } from 'react-router-dom';
 import ConfirmDialog from './ConfirmDialog';
-import WalletDialog from '../Dialogs/WalletDialog';
 import ModifyWalletDialog from '../Dialogs/ModifyWalletDialog';
 
 export default function Wallet({
-  name, balance, id, handleEvent, somethingChanged, setSomethingChanged,
+  name, description, balance, id, handleEvent, forceWalletRefresh,
 }) {
-  const [openDelete, setOpenDelete] = React.useState(false);
-  const [openDetails, setOpenDetails] = React.useState(false);
-  const [openEdit, setOpenEdit] = React.useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const navigate = useNavigate();
 
   function handleDeleteOpen() {
     setOpenDelete(true);
@@ -26,14 +26,6 @@ export default function Wallet({
 
   function handleDeleteClose() {
     setOpenDelete(false);
-  }
-
-  function handleDetailsOpen() {
-    setOpenDetails(true);
-  }
-
-  function handleDetailsClose() {
-    setOpenDetails(false);
   }
 
   function handleEditOpen() {
@@ -52,22 +44,23 @@ export default function Wallet({
             {name}
           </Typography>
           <Typography>
+            {description}
+          </Typography>
+          <Typography>
             Balance:
             {' '}
             {balance}
           </Typography>
         </CardContent>
         <CardActions>
-          <Button onClick={handleDetailsOpen}>Details</Button>
-          <WalletDialog name={name} open={openDetails} handleClose={handleDetailsClose} />
+          <Button onClick={() => navigate(`/wallet/${id}`)}>Details</Button>
           <Box sx={{ flexGrow: 1 }} />
           <EditIcon onClick={handleEditOpen} />
           <ModifyWalletDialog
             id={id}
             open={openEdit}
             handleClose={handleEditClose}
-            somethingChanged={somethingChanged}
-            setSomethingChanged={setSomethingChanged}
+            forceWalletRefresh={forceWalletRefresh}
           />
           <DeleteIcon onClick={handleDeleteOpen} />
           <ConfirmDialog title={`Are you sure you want to delete ${name}?`} open={openDelete} handleClose={handleDeleteClose} handleEvent={handleEvent} id={id} />
