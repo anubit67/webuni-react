@@ -5,12 +5,26 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import LogoutIcon from '@mui/icons-material/Logout';
+import {
+  Divider, IconButton, Menu, MenuItem,
+} from '@mui/material';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 import { useAuth } from '../hooks/useAuth';
 
 function MenuBar() {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const { logout, sessionUser } = useAuth();
+
+  console.log(sessionUser);
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   function handleLogout() {
     logout();
@@ -22,7 +36,7 @@ function MenuBar() {
       <AppBar position="static">
         <Toolbar>
           <Typography
-            variant="h6"
+            variant="h4"
             component="div"
             sx={{ flexGrow: 1 }}
             onClick={() => {
@@ -31,7 +45,37 @@ function MenuBar() {
           >
             Wallet App
           </Typography>
-          <LogoutIcon fontSize="medium" onClick={handleLogout} />
+          <div>
+            <IconButton
+              size="large"
+              onClick={handleMenu}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <Typography sx={{ p: 1 }} variant="h5" textAlign="center">
+                {sessionUser.name}
+              </Typography>
+              <Divider />
+              <MenuItem onClick={() => navigate('/mywallets')}>My wallets</MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            </Menu>
+          </div>
         </Toolbar>
       </AppBar>
     </Box>
