@@ -1,67 +1,106 @@
+/* eslint-disable max-len */
 /* eslint-disable react/jsx-no-bind */
 import React, { useState } from 'react';
 import {
-  Chip, CircularProgress, Grid, Typography,
+  Button,
+  Chip, Grid, LinearProgress, Typography,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { Container } from '@mui/system';
-import { useParams } from 'react-router-dom';
-import DataTable from '../components/DataTable';
+import { useNavigate, useParams } from 'react-router-dom';
+import BasicTable from '../components/BasicTable';
 import { AXIOS_METHOD, doApiCall, useApi } from '../hooks/useApi';
 import AddNewUserDialog from '../Dialogs/AddUserDialog';
+import AddNewTransactionDialog from '../Dialogs/AddNewTransactionDialog';
+import useTransactions from './useTransactions';
 
 export default function WalletScreen() {
   const { id } = useParams();
-  const [data, loading, error, forceUsersRefresh] = useApi(AXIOS_METHOD.GET, `/wallet/${id}`, false, id);
-  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const [users, usersLoading, usersError, forceUsersRefresh] = useApi(AXIOS_METHOD.GET, `/wallet/${id}`, false, id);
+  const [transactions, transactionsLoading, transactionsError, onLoadMore, hasMore, resetTransactionTable] = useTransactions(id);
+  const [openNewUser, setOpenNewUser] = useState(false);
+  const [openNewTranscation, setOpenNewTranscation] = useState(false);
 
-  function handleOpen() {
-    setOpen(true);
-  }
-  function handleClose() {
-    setOpen(false);
+  console.log(transactions);
+
+  function handleNewUserOpen() {
+    setOpenNewUser(true);
   }
 
-  function handleDelete(name) {
-    console.log(name);
+  function handleNewUserClose() {
+    setOpenNewUser(false);
+  }
+
+  function handleNewTranscationOpen() {
+    setOpenNewTranscation(true);
+  }
+
+  function handleNewTranscationClose() {
+    setOpenNewTranscation(false);
+  }
+
+  function handleAccessRemove(name) {
     doApiCall(AXIOS_METHOD.POST, '/user/search', (userId) => {
-      console.log(userId);
       doApiCall(AXIOS_METHOD.POST, `/wallet/${id}/remove_access`, () => forceUsersRefresh(), false, { user_id: userId });
     }, false, { name });
   }
 
-  if (loading) {
-    <CircularProgress />;
+  function handleTransactionDelete(transactionId) {
+    doApiCall(AXIOS_METHOD.DELETE, `/transaction/${transactionId}`, () => resetTransactionTable());
   }
 
-  if (error) {
-    <Typography>{error}</Typography>;
+  if (usersError || transactionsError) {
+    <Typography>{usersError || transactionsError}</Typography>;
   }
 
   return (
     <Container maxWidth="lg">
-      <Grid container direction="column">
-        <Grid item>
-          <Typography variant="h2">{data?.name}</Typography>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Typography variant="h2">{users?.name}</Typography>
         </Grid>
-        <Grid item>
-          <Typography variant="body1">{data?.description}</Typography>
+        <Grid item xs={12}>
+          <Typography variant="body1">{users?.description}</Typography>
         </Grid>
-        <Grid item>
+        <Grid item xs={12}>
           <Typography variant="h5">Users</Typography>
         </Grid>
-        <Grid item>
-          {data?.access?.map(((user) => <Chip variant="outlined" label={user.name} onDelete={() => handleDelete(user.name)} />))}
-          <AddIcon onClick={handleOpen} />
+        <Grid item xs={12}>
+          <Grid container>
+            {usersLoading ? <LinearProgress /> : users && users?.access?.map(((user) => <Grid item><Chip variant="outlined" label={user.name} onDelete={() => handleAccessRemove(user.name)} /></Grid>))}
+            <Grid item>
+              <Chip component={AddIcon} onClick={handleNewUserOpen} variant="outlined" />
+            </Grid>
+          </Grid>
           <AddNewUserDialog
-            open={open}
-            handleClose={handleClose}
+            open={openNewUser}
+            handleClose={handleNewUserClose}
             id={id}
             forceUsersRefresh={forceUsersRefresh}
           />
         </Grid>
-        <Grid item>
-          <DataTable />
+        <Grid item xs={12}>
+          {transactionsLoading ? <LinearProgress /> : transactions && <BasicTable transactionData={transactions} onDelete={handleTransactionDelete} />}
+        </Grid>
+        <Grid item xs={12}>
+          {hasMore && <Button variant="contained" onClick={onLoadMore} fullWidth>Load more</Button>}
+        </Grid>
+        <Grid item xs={12}>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <Button variant="contained" onClick={handleNewTranscationOpen} color="success" fullWidth>Add new transaction</Button>
+              <AddNewTransactionDialog
+                open={openNewTranscation}
+                handleClose={handleNewTranscationClose}
+                id={id}
+                resetTransactionTable={resetTransactionTable}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Button onClick={() => navigate('/wallets')} variant="contained" color="error" fullWidth>Back</Button>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </Container>
