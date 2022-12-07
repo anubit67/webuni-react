@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import {
   Button,
-  Chip, Grid, LinearProgress, Typography,
+  Chip, Grid, LinearProgress, Paper, Typography,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { Container } from '@mui/system';
@@ -21,8 +21,6 @@ export default function WalletScreen() {
   const [transactions, transactionsLoading, transactionsError, onLoadMore, hasMore, resetTransactionTable] = useTransactions(id);
   const [openNewUser, setOpenNewUser] = useState(false);
   const [openNewTranscation, setOpenNewTranscation] = useState(false);
-
-  console.log(transactions);
 
   function handleNewUserOpen() {
     setOpenNewUser(true);
@@ -51,12 +49,12 @@ export default function WalletScreen() {
   }
 
   if (usersError || transactionsError) {
-    <Typography>{usersError || transactionsError}</Typography>;
+    return <Typography>{usersError || transactionsError}</Typography>;
   }
 
   return (
     <Container maxWidth="lg">
-      <Grid container spacing={2}>
+      <Grid container spacing={2} component={Paper} sx={{ my: 2, pb: 2, pr: 2 }} elevation={2}>
         <Grid item xs={12}>
           <Typography variant="h2">{users?.name}</Typography>
         </Grid>
@@ -67,10 +65,10 @@ export default function WalletScreen() {
           <Typography variant="h5">Users</Typography>
         </Grid>
         <Grid item xs={12}>
-          <Grid container>
+          <Grid container spacing={1}>
             {usersLoading ? <LinearProgress /> : users && users?.access?.map(((user) => <Grid item><Chip variant="outlined" label={user.name} onDelete={() => handleAccessRemove(user.name)} /></Grid>))}
             <Grid item>
-              <Chip component={AddIcon} onClick={handleNewUserOpen} variant="outlined" />
+              <Chip component={AddIcon} onClick={handleNewUserOpen} variant="outlined" sx={{ minWidth: 50 }} />
             </Grid>
           </Grid>
           <AddNewUserDialog

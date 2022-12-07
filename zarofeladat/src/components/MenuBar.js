@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-bind */
-import * as React from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -13,10 +13,8 @@ import { useAuth } from '../hooks/useAuth';
 
 function MenuBar() {
   const navigate = useNavigate();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const { logout, sessionUser } = useAuth();
-
-  console.log(sessionUser);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);

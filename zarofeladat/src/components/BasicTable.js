@@ -25,7 +25,7 @@ export default function BasicTable({ transactionData, onDelete }) {
   }
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} elevation={1}>
       <Table>
         <TableHead>
           <TableRow>
@@ -34,9 +34,7 @@ export default function BasicTable({ transactionData, onDelete }) {
         </TableHead>
         <TableBody>
           {transactionData.sort(sortByDate).map((transaction) => (
-            <TableRow
-              key={transaction.id}
-            >
+            <TableRow key={transaction.id}>
               <TableCell>{transaction.created_by.name}</TableCell>
               <TableCell>{transaction.title}</TableCell>
               <TableCell>{transaction.amount}</TableCell>

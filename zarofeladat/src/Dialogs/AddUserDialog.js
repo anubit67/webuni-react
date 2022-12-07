@@ -12,11 +12,11 @@ import { AXIOS_METHOD, doApiCall } from '../hooks/useApi';
 export default function AddNewUserDialog({
   open, handleClose, id, forceUsersRefresh,
 }) {
-  // eslint-disable-next-line consistent-return
   function nameValidator(value) {
     if (!value && value.length === 0) {
-      return 'User must not be empty';
+      return 'Username must not be empty';
     }
+    return '';
   }
 
   return (
@@ -34,23 +34,24 @@ export default function AddNewUserDialog({
             handleClose();
           };
 
-          const onFailure = (apiError) => {
+          const onFailure = (apiError, err) => {
+            if (err?.response?.status === 404) {
+              setFieldError('name', 'User not found');
+            } else {
+              setFieldError('name', apiError);
+            }
             setSubmitting(false);
-            setFieldError('name', apiError);
           };
 
-          console.log(name);
           doApiCall(AXIOS_METHOD.POST, '/user/search', (userId) => {
-            console.log(userId);
             doApiCall(AXIOS_METHOD.POST, `/wallet/${id}/grant_access`, onSuccess, onFailure, { user_id: userId });
-          }, false, name);
+          }, onFailure, name);
         }}
-        validate={console.log}
       >
         <Form>
           <DialogTitle>Add user</DialogTitle>
           <DialogContent>
-            <Field name="name" validate={nameValidator} type="textfield" component={TextField} label="Wallet name" variant="outlined" fullWidth />
+            <Field name="name" validate={nameValidator} type="textfield" component={TextField} label="Username" variant="outlined" fullWidth />
           </DialogContent>
           <DialogActions>
             <Button type="submit" variant="contained" fullWidth>Add</Button>

@@ -14,7 +14,7 @@ import ConfirmDialog from './ConfirmDialog';
 import ModifyWalletDialog from '../Dialogs/ModifyWalletDialog';
 
 export default function Wallet({
-  name, description, balance, id, handleEvent, forceWalletRefresh,
+  name, balance, id, handleEvent, forceWalletRefresh, isOwner,
 }) {
   const [openDelete, setOpenDelete] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
@@ -36,34 +36,48 @@ export default function Wallet({
     setOpenEdit(false);
   }
 
+  function renderBalance(b) {
+    if (b < 0) {
+      return <Typography color="red">{b}</Typography>;
+    }
+    if (b > 0) {
+      return <Typography color="green">{b}</Typography>;
+    }
+    return <Typography>{b}</Typography>;
+  }
+
   return (
     <Grid item lg={3} md={4} xs={12}>
-      <Card sx={{ minWidth: 275 }}>
+      <Card sx={{ minWidth: 275, minHeight: 175 }} elevation={2}>
         <CardContent>
-          <Typography variant="h4">
+          <Typography variant="h5">
             {name}
           </Typography>
           <Typography>
-            {description}
-          </Typography>
-          <Typography>
             Balance:
-            {' '}
-            {balance}
+            {renderBalance(balance)}
           </Typography>
         </CardContent>
         <CardActions>
           <Button onClick={() => navigate(`/wallet/${id}`)}>Details</Button>
           <Box sx={{ flexGrow: 1 }} />
-          <EditIcon onClick={handleEditOpen} />
-          <ModifyWalletDialog
-            id={id}
-            open={openEdit}
-            handleClose={handleEditClose}
-            forceWalletRefresh={forceWalletRefresh}
-          />
-          <DeleteIcon onClick={handleDeleteOpen} />
-          <ConfirmDialog title={`Are you sure you want to delete ${name}?`} open={openDelete} handleClose={handleDeleteClose} handleEvent={handleEvent} id={id} />
+          {isOwner() && (
+            <>
+              <Button onClick={handleEditOpen}>
+                <EditIcon />
+              </Button>
+              <ModifyWalletDialog
+                id={id}
+                open={openEdit}
+                handleClose={handleEditClose}
+                forceWalletRefresh={forceWalletRefresh}
+              />
+              <Button onClick={handleDeleteOpen}>
+                <DeleteIcon />
+              </Button>
+              <ConfirmDialog title={`Are you sure you want to delete ${name}?`} open={openDelete} handleClose={handleDeleteClose} handleEvent={handleEvent} id={id} />
+            </>
+          )}
         </CardActions>
       </Card>
     </Grid>
