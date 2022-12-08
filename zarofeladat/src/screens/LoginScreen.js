@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Button, Card, Container, Grid, Typography,
@@ -13,7 +13,10 @@ import { useAuth } from '../hooks/useAuth';
 
 export default function LoginScreen() {
   const { handleLoginResult } = useAuth();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [password] = useState({
+    showPassword: false,
+  });
   const navigate = useNavigate();
 
   const handleClickOpen = () => {
@@ -48,7 +51,7 @@ export default function LoginScreen() {
     >
       <Form>
         <Container maxWidth="lg">
-          <Grid container spacing={2} paddingTop="25%">
+          <Grid container spacing={1} paddingTop="25%">
             <Grid item lg={8} md={6} xs={12}>
               <Grid container spacing={2} direction="column">
                 <Grid item lg={3} md={4} xs={12}>
@@ -61,12 +64,12 @@ export default function LoginScreen() {
             </Grid>
             <Grid item lg={4} md={6} xs={12}>
               <Card elevation={3}>
-                <Grid container spacing={2} direction="column" p={1}>
+                <Grid container spacing={1} direction="column" p={1}>
                   <Grid item lg={3} md={4} xs={12}>
-                    <Field name="name" type="textfield" component={TextField} label="Username" variant="outlined" fullWidth />
+                    <Field name="name" type="textfield" component={TextField} label="Username" fullWidth />
                   </Grid>
                   <Grid item lg={3} md={4} xs={12}>
-                    <Field name="password" type="textfield" component={TextField} label="Password" variant="outlined" fullWidth />
+                    <Field name="password" type={password.showPassword ? 'text' : 'password'} component={TextField} label="Password" fullWidth />
                   </Grid>
                   <Grid item lg={3} md={4} xs={12}>
                     <Button type="submit" variant="contained" fullWidth>Login</Button>

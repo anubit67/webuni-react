@@ -1,8 +1,8 @@
 /* eslint-disable */
-import * as React from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Button,  Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography, 
+  Button,  Dialog, DialogActions, DialogContent, DialogTitle,  Grid,  Typography, 
 } from '@mui/material';
 import {
   Formik, Form, Field, ErrorMessage
@@ -13,6 +13,10 @@ import { useAuth } from "../hooks/useAuth";
 
 export default function RegistrationDialog({ open, onClose }) {
   const { handleLoginResult } = useAuth();
+  const [password] = useState({
+    password: '',
+    showPassword: false,
+  });
   const navigate = useNavigate();
 
   function usermameValidator(value) {
@@ -83,19 +87,29 @@ export default function RegistrationDialog({ open, onClose }) {
           <DialogTitle>Sign Up</DialogTitle>
           <DialogContent>
             <Typography variant="h5" textAlign="center"></Typography>
-            <Field name="name" validate={usermameValidator} type="textfield" component={TextField} label="Username" variant="outlined" fullWidth />
-            <Field name="password" validate={passwordValidator} type="textfield" component={TextField} label="Password" variant="outlined" fullWidth />
-            <Field name="passwordAgain" validate={passwordAgainValidator} type="textfield" component={TextField} label="Password again" variant="outlined" fullWidth />
-            <Field
-              component={CheckboxWithLabel}
-              type="checkbox"
-              name="legal"
-              Label={{label: 'Legal stuff'}}
-              validate={value => value === false && 'Legal stuff accept required!'}
-              />
-            <Typography variant={"body2"} color={"error"}>
-              <ErrorMessage name={"legal"}/>
-            </Typography>
+            <Grid container direction="column" spacing={1}>
+              <Grid item>
+                <Field name="name" validate={usermameValidator} type="textfield" component={TextField} label="Username" variant="outlined" fullWidth />
+              </Grid>
+              <Grid item>
+                <Field name="password" validate={passwordValidator} type={password.showPassword ? 'text' : 'password'} component={TextField} label="Password" fullWidth />
+              </Grid>
+              <Grid item>
+                <Field name="passwordAgain" validate={passwordAgainValidator} type={password.showPassword ? 'text' : 'password'} component={TextField} label="Password again" fullWidth />
+              </Grid>
+              <Grid item>
+                <Field
+                component={CheckboxWithLabel}
+                type="checkbox"
+                name="legal"
+                Label={{label: 'Legal stuff'}}
+                validate={value => value === false && 'Legal stuff accept required!'}
+                />
+                <Typography variant={"body2"} color={"error"}>
+                  <ErrorMessage name={"legal"}/>
+                </Typography>
+              </Grid>
+            </Grid> 
           </DialogContent>
           <DialogActions>
             <Button type="Submit" variant="contained" fullWidth>Register</Button>
