@@ -8,11 +8,12 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import { Container } from '@mui/system';
 import { useNavigate, useParams } from 'react-router-dom';
-import BasicTable from '../components/BasicTable';
+import TransactionsTable from '../components/TranscationsTable';
 import { AXIOS_METHOD, doApiCall, useApi } from '../hooks/useApi';
 import AddNewUserDialog from '../Dialogs/AddUserDialog';
 import AddNewTransactionDialog from '../Dialogs/AddNewTransactionDialog';
-import useTransactions from './useTransactions';
+import useTransactions from '../hooks/useTransactions';
+import MenuBar from '../components/MenuBar';
 
 export default function WalletScreen() {
   const { id } = useParams();
@@ -54,49 +55,58 @@ export default function WalletScreen() {
 
   return (
     <Container maxWidth="lg">
-      <Grid container spacing={2} component={Paper} sx={{ my: 2, pb: 2, pr: 2 }} elevation={2}>
-        <Grid item xs={12}>
-          <Typography variant="h2">{users?.name}</Typography>
+      <Grid container component={Paper} spacing={2} elevation={2}>
+        <Grid item lg={12} md={12} xs={12}>
+          <MenuBar />
         </Grid>
-        <Grid item xs={12}>
-          <Typography variant="body1">{users?.description}</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="h5">Users</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Grid container spacing={1}>
-            {usersLoading ? <LinearProgress /> : users && users?.access?.map(((user) => <Grid item><Chip variant="outlined" label={user.name} onDelete={() => handleAccessRemove(user.name)} /></Grid>))}
-            <Grid item>
-              <Chip component={AddIcon} onClick={handleNewUserOpen} variant="outlined" sx={{ minWidth: 50 }} />
+        <Grid item>
+          <Grid container spacing={2} sx={{ pb: 2, pr: 2 }}>
+            <Grid item xs={12}>
+              <Typography variant="h2">{users?.name}</Typography>
             </Grid>
-          </Grid>
-          <AddNewUserDialog
-            open={openNewUser}
-            handleClose={handleNewUserClose}
-            id={id}
-            forceUsersRefresh={forceUsersRefresh}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          {transactionsLoading ? <LinearProgress /> : transactions && <BasicTable transactionData={transactions} onDelete={handleTransactionDelete} />}
-        </Grid>
-        <Grid item xs={12}>
-          {hasMore && <Button variant="contained" onClick={onLoadMore} fullWidth>Load more</Button>}
-        </Grid>
-        <Grid item xs={12}>
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <Button variant="contained" onClick={handleNewTranscationOpen} color="success" fullWidth>Add new transaction</Button>
-              <AddNewTransactionDialog
-                open={openNewTranscation}
-                handleClose={handleNewTranscationClose}
+            <Grid item xs={12}>
+              <Typography variant="body1">{users?.description}</Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h5">Users</Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container spacing={1}>
+                {usersLoading ? <LinearProgress /> : users && users?.access?.map(((user) => <Grid item key={user.id}><Chip variant="outlined" label={user.name} onDelete={() => handleAccessRemove(user.name)} /></Grid>))}
+                <Grid item>
+                  <Chip icon={<AddIcon />} onClick={handleNewUserOpen} variant="outlined" sx={{ minWidth: 50 }} />
+                </Grid>
+              </Grid>
+              <AddNewUserDialog
+                open={openNewUser}
+                handleClose={handleNewUserClose}
                 id={id}
-                resetTransactionTable={resetTransactionTable}
+                forceUsersRefresh={forceUsersRefresh}
               />
             </Grid>
-            <Grid item xs={6}>
-              <Button onClick={() => navigate('/wallets')} variant="contained" color="error" fullWidth>Back</Button>
+            <Grid item xs={12}>
+              {transactionsLoading ? <LinearProgress /> : transactions && (
+                <TransactionsTable transactionData={transactions} onDelete={handleTransactionDelete} resetTransactionTable={resetTransactionTable} />
+              )}
+            </Grid>
+            <Grid item xs={12}>
+              {hasMore && <Button variant="contained" onClick={onLoadMore} fullWidth>Load more</Button>}
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <Button variant="contained" onClick={handleNewTranscationOpen} color="success" fullWidth>Add new transaction</Button>
+                  <AddNewTransactionDialog
+                    open={openNewTranscation}
+                    handleClose={handleNewTranscationClose}
+                    id={id}
+                    resetTransactionTable={resetTransactionTable}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <Button onClick={() => navigate('/wallets')} variant="contained" color="error" fullWidth>Back</Button>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
