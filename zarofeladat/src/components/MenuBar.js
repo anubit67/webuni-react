@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-bind */
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -9,12 +9,18 @@ import {
   Divider, IconButton, Menu, MenuItem,
 } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import { useTheme } from '@emotion/react';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useAuth } from '../hooks/useAuth';
+import { useMyTheme } from '../Providers';
 
 function MenuBar() {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const { logout, sessionUser } = useAuth();
+  const { toggleColorMode } = useMyTheme();
+  const theme = useTheme();
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -43,6 +49,9 @@ function MenuBar() {
           >
             Wallet App
           </Typography>
+          <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
+            {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
           <div>
             <IconButton
               size="large"
