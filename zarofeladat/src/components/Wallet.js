@@ -1,9 +1,8 @@
 /* eslint-disable react/jsx-no-bind */
-import { Grid } from '@mui/material';
+import { Grid, IconButton } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -48,37 +47,35 @@ export default function Wallet({
 
   return (
     <Grid item lg={3} md={4} xs={12}>
-      <Card sx={{ minWidth: 275, minHeight: 175 }} elevation={2}>
-        <CardContent>
-          <Typography variant="h5">
+      <Card sx={{ minHeight: 175 }} elevation={2}>
+        <CardContent onClick={() => navigate(`/wallet/${id}`)}>
+          <Typography>
             {name}
           </Typography>
           <Typography>
             Balance:
+            {' '}
             {renderBalance(balance)}
           </Typography>
         </CardContent>
-        <CardActions>
-          <Button onClick={() => navigate(`/wallet/${id}`)}>Details</Button>
-          <Box sx={{ flexGrow: 1 }} />
-          {isOwner() && (
-            <>
-              <Button onClick={handleEditOpen}>
-                <EditIcon />
-              </Button>
-              <ModifyWalletDialog
-                id={id}
-                open={openEdit}
-                handleClose={handleEditClose}
-                forceWalletRefresh={forceWalletRefresh}
-              />
-              <Button onClick={handleDeleteOpen}>
-                <DeleteIcon />
-              </Button>
-              <ConfirmDialog title={`Are you sure you want to delete ${name}?`} open={openDelete} handleClose={handleDeleteClose} handleEvent={handleEvent} id={id} />
-            </>
-          )}
-        </CardActions>
+        {isOwner() && (
+          <CardActions>
+            <Box sx={{ flexGrow: 1 }} />
+            <IconButton onClick={handleEditOpen}>
+              <EditIcon />
+            </IconButton>
+            <ModifyWalletDialog
+              id={id}
+              open={openEdit}
+              handleClose={handleEditClose}
+              forceWalletRefresh={forceWalletRefresh}
+            />
+            <IconButton onClick={handleDeleteOpen}>
+              <DeleteIcon />
+            </IconButton>
+            <ConfirmDialog title={`Are you sure you want to delete ${name}?`} open={openDelete} handleClose={handleDeleteClose} handleEvent={handleEvent} id={id} />
+          </CardActions>
+        )}
       </Card>
     </Grid>
   );

@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-bind */
 import React from 'react';
 import {
-  Button, Dialog, DialogActions, DialogContent, DialogTitle,
+  Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid,
 } from '@mui/material';
 import {
   Formik, Form, Field,
@@ -42,17 +42,30 @@ export default function AddWalletDialog({
 
           doApiCall(AXIOS_METHOD.PUT, '/wallet', onSuccess, onFailure, values);
         }}
-        validate={console.log}
       >
         <Form>
-          <DialogTitle>Add new wallet</DialogTitle>
+          <Grid container justifyContent="center">
+            <DialogTitle variant="h5">Add new wallet</DialogTitle>
+          </Grid>
           <DialogContent>
-            <Field name="name" validate={nameValidator} type="textfield" component={TextField} label="Wallet name" variant="outlined" fullWidth />
-            <Field name="description" type="textfield" component={TextField} label="Description" variant="outlined" fullWidth />
+            <Grid container direction="column" spacing={2}>
+              <Grid item>
+                <Field name="name" validate={nameValidator} type="textfield" component={TextField} label="Wallet name" variant="outlined" fullWidth />
+              </Grid>
+              <Grid item>
+                <Field name="description" type="textfield" component={TextField} label="Description" variant="outlined" fullWidth />
+              </Grid>
+            </Grid>
           </DialogContent>
           <DialogActions>
-            <Button type="submit" variant="contained" fullWidth>Add</Button>
-            <Button variant="contained" color="error" fullWidth onClick={handleClose}>Cancel</Button>
+            <Grid container spacing={2} justifyContent="center">
+              <Grid item>
+                <Button type="submit" variant="contained" fullWidth>Add</Button>
+              </Grid>
+              <Grid item>
+                <Button variant="contained" color="error" fullWidth onClick={handleClose}>Cancel</Button>
+              </Grid>
+            </Grid>
           </DialogActions>
         </Form>
       </Formik>

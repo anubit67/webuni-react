@@ -61,7 +61,7 @@ export default function WalletsScreen() {
         ))}
         <Grid item lg={3} md={4} xs={12}>
           <Button onClick={handleOpen} variant="contained" color="success" fullWidth sx={{ height: '175px' }} elevation={2}>
-            <Typography variant="h5" fontFamily="fantasy">Add new wallet</Typography>
+            <Typography variant="h5">Add new wallet</Typography>
           </Button>
           <AddWalletDialog
             open={open}

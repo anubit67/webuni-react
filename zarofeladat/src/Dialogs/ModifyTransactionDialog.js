@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-bind */
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button, Dialog, DialogActions, DialogContent, DialogTitle,
 } from '@mui/material';
@@ -12,7 +12,7 @@ import { AXIOS_METHOD, doApiCall } from '../hooks/useApi';
 export default function modifyTransactionDialog({
   open, handleClose, id, resetTransactionTable,
 }) {
-  const [initialValues, setInitialValues] = useState({ title: '', description: '' });
+  const [initialValues] = useState({ title: '', description: '' });
 
   function validator(value) {
     if (!value && value.length === 0) {

@@ -2,7 +2,7 @@
 /* eslint-disable consistent-return */
 import React from 'react';
 import {
-  Button, Dialog, DialogActions, DialogContent, DialogTitle,
+  Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid,
 } from '@mui/material';
 import {
   Formik, Form, Field,
@@ -42,17 +42,24 @@ export default function ModifyWalletDialog({
 
           doApiCall(AXIOS_METHOD.PATCH, `/wallet/${id}`, onSuccess, onFailure, values);
         }}
-        validate={console.log}
       >
         <Form>
-          <DialogTitle>Modify wallet</DialogTitle>
-          <DialogContent>
-            <Field name="description" type="textfield" component={TextField} label="Description" variant="outlined" fullWidth validate={validator} />
-          </DialogContent>
-          <DialogActions>
-            <Button type="submit" variant="contained" fullWidth>Add</Button>
-            <Button variant="contained" color="error" fullWidth onClick={handleClose}>Cancel</Button>
-          </DialogActions>
+          <Grid container direction="column" alignItems="center">
+            <Grid item>
+              <DialogTitle>Modify wallet</DialogTitle>
+            </Grid>
+            <Grid item>
+              <DialogContent>
+                <Field name="description" type="textfield" component={TextField} label="Description" variant="outlined" fullWidth validate={validator} />
+              </DialogContent>
+            </Grid>
+            <Grid item>
+              <DialogActions>
+                <Button type="submit" variant="contained" fullWidth>Modify</Button>
+                <Button variant="contained" color="error" fullWidth onClick={handleClose}>Cancel</Button>
+              </DialogActions>
+            </Grid>
+          </Grid>
         </Form>
       </Formik>
     </Dialog>
