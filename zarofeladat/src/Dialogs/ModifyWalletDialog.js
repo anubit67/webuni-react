@@ -44,22 +44,14 @@ export default function ModifyWalletDialog({
         }}
       >
         <Form>
-          <Grid container direction="column" alignItems="center">
-            <Grid item>
-              <DialogTitle>Modify wallet</DialogTitle>
-            </Grid>
-            <Grid item>
-              <DialogContent>
-                <Field name="description" type="textfield" component={TextField} label="Description" variant="outlined" fullWidth validate={validator} />
-              </DialogContent>
-            </Grid>
-            <Grid item>
-              <DialogActions>
-                <Button type="submit" variant="contained" fullWidth>Modify</Button>
-                <Button variant="contained" color="error" fullWidth onClick={handleClose}>Cancel</Button>
-              </DialogActions>
-            </Grid>
-          </Grid>
+          <DialogTitle variant="h5" textAlign="center" fontWeight={500}>Modify wallet</DialogTitle>
+          <DialogContent>
+            <Field name="description" type="textfield" component={TextField} label="Description" variant="outlined" multiline rows={4} fullWidth validate={validator} sx={{ mt: 3 }} />
+          </DialogContent>
+          <DialogActions sx={{ pl: 3, pr: 3, pb: 3 }}>
+            <Button type="submit" variant="contained" fullWidth>Modify</Button>
+            <Button variant="contained" color="error" fullWidth onClick={handleClose}>Cancel</Button>
+          </DialogActions>
         </Form>
       </Formik>
     </Dialog>

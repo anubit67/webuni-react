@@ -10,7 +10,7 @@ import { TextField } from 'formik-mui';
 import { AXIOS_METHOD, doApiCall } from '../hooks/useApi';
 
 export default function AddWalletDialog({
-  open, handleClose, forceWalletRefresh,
+  open, handleClose, forceWalletRefresh: refreshWalletData,
 }) {
   // eslint-disable-next-line consistent-return
   function nameValidator(value) {
@@ -31,7 +31,7 @@ export default function AddWalletDialog({
 
           const onSuccess = () => {
             setSubmitting(false);
-            forceWalletRefresh();
+            refreshWalletData();
             handleClose();
           };
 
@@ -44,28 +44,14 @@ export default function AddWalletDialog({
         }}
       >
         <Form>
-          <Grid container justifyContent="center">
-            <DialogTitle variant="h5">Add new wallet</DialogTitle>
-          </Grid>
+          <DialogTitle variant="h5" textAlign="center" fontWeight={500}>Add new wallet</DialogTitle>
           <DialogContent>
-            <Grid container direction="column" spacing={2}>
-              <Grid item>
-                <Field name="name" validate={nameValidator} type="textfield" component={TextField} label="Wallet name" variant="outlined" fullWidth />
-              </Grid>
-              <Grid item>
-                <Field name="description" type="textfield" component={TextField} label="Description" variant="outlined" fullWidth />
-              </Grid>
-            </Grid>
+            <Field name="name" validate={nameValidator} type="textfield" component={TextField} label="Wallet name" variant="outlined" fullWidth sx={{ pb: 3, mt: 3 }} />
+            <Field name="description" type="textfield" component={TextField} label="Description" variant="outlined" multiline rows={4} fullWidth />
           </DialogContent>
-          <DialogActions>
-            <Grid container spacing={2} justifyContent="center">
-              <Grid item>
-                <Button type="submit" variant="contained" fullWidth>Add</Button>
-              </Grid>
-              <Grid item>
-                <Button variant="contained" color="error" fullWidth onClick={handleClose}>Cancel</Button>
-              </Grid>
-            </Grid>
+          <DialogActions sx={{ pl: 3, pr: 3, pb: 3 }}>
+            <Button type="submit" variant="contained" fullWidth>Add</Button>
+            <Button variant="contained" color="error" fullWidth onClick={handleClose}>Cancel</Button>
           </DialogActions>
         </Form>
       </Formik>

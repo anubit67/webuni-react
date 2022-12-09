@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Button,  Dialog, DialogActions, DialogContent, DialogTitle,  Grid,  Typography, 
+  Button,  Dialog, DialogActions, DialogContent, DialogTitle,  Grid,  Typography,
 } from '@mui/material';
 import {
   Formik, Form, Field, ErrorMessage
@@ -66,7 +66,7 @@ export default function RegistrationDialog({ open, onClose }) {
         }}
         onSubmit={(values, {setFieldError, setSubmitting}) => {
           setSubmitting(true);
-          
+
           const onFailure = (apiError) => {
             setFieldError('name', apiError);
             setSubmitting(false);
@@ -84,20 +84,12 @@ export default function RegistrationDialog({ open, onClose }) {
         validate={passwordAgainValidator}
       >
         <Form>
-          <DialogTitle>Sign Up</DialogTitle>
+          <DialogTitle variant="h4" textAlign="center" fontWeight={500}>Sign Up</DialogTitle>
           <DialogContent>
             <Typography variant="h5" textAlign="center"></Typography>
-            <Grid container direction="column" spacing={1}>
-              <Grid item>
-                <Field name="name" validate={usermameValidator} type="textfield" component={TextField} label="Username" variant="outlined" fullWidth />
-              </Grid>
-              <Grid item>
-                <Field name="password" validate={passwordValidator} type={password.showPassword ? 'text' : 'password'} component={TextField} label="Password" fullWidth />
-              </Grid>
-              <Grid item>
-                <Field name="passwordAgain" validate={passwordAgainValidator} type={password.showPassword ? 'text' : 'password'} component={TextField} label="Password again" fullWidth />
-              </Grid>
-              <Grid item>
+                <Field name="name" validate={usermameValidator} type="textfield" component={TextField} label="Username" variant="outlined" fullWidth sx={{ mt: 3 }}/>
+                <Field name="password" validate={passwordValidator} type={password.showPassword ? 'text' : 'password'} component={TextField} label="Password" fullWidth sx={{ mt: 3 }}/>
+                <Field name="passwordAgain" validate={passwordAgainValidator} type={password.showPassword ? 'text' : 'password'} component={TextField} label="Password again" fullWidth sx={{ mt: 3 }}/>
                 <Field
                 component={CheckboxWithLabel}
                 type="checkbox"
@@ -108,10 +100,8 @@ export default function RegistrationDialog({ open, onClose }) {
                 <Typography variant={"body2"} color={"error"}>
                   <ErrorMessage name={"legal"}/>
                 </Typography>
-              </Grid>
-            </Grid> 
           </DialogContent>
-          <DialogActions>
+          <DialogActions sx={{ pl: 3, pr: 3, pb: 3 }}>
             <Button type="Submit" variant="contained" fullWidth>Register</Button>
             <Button variant="contained" color="error" fullWidth onClick={onClose}>Cancel</Button>
           </DialogActions>

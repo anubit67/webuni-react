@@ -47,7 +47,12 @@ export default function Wallet({
 
   return (
     <Grid item lg={3} md={4} xs={12}>
-      <Card sx={{ minHeight: 175 }} elevation={2}>
+      <Card
+        sx={{
+          minHeight: 175, display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+        }}
+        elevation={2}
+      >
         <CardContent onClick={() => navigate(`/wallet/${id}`)}>
           <Typography>
             {name}

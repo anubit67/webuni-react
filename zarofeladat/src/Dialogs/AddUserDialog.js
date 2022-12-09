@@ -49,11 +49,11 @@ export default function AddNewUserDialog({
         }}
       >
         <Form>
-          <DialogTitle>Add user</DialogTitle>
+          <DialogTitle variant="h5" textAlign="center" fontWeight={500}>Add user</DialogTitle>
           <DialogContent>
-            <Field name="name" validate={nameValidator} type="textfield" component={TextField} label="Username" variant="outlined" fullWidth />
+            <Field name="name" validate={nameValidator} type="textfield" component={TextField} label="Username" variant="outlined" fullWidth sx={{ mt: 3 }} />
           </DialogContent>
-          <DialogActions>
+          <DialogActions sx={{ pl: 3, pr: 3, pb: 3 }}>
             <Button type="submit" variant="contained" fullWidth>Add</Button>
             <Button variant="contained" color="error" fullWidth onClick={handleClose}>Cancel</Button>
           </DialogActions>

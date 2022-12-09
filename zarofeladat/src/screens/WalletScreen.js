@@ -6,7 +6,7 @@ import {
   Chip, Grid, LinearProgress, Paper, Typography,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { Container } from '@mui/system';
+import { Box, Container } from '@mui/system';
 import { useNavigate, useParams } from 'react-router-dom';
 import TransactionsTable from '../components/TranscationsTable';
 import { AXIOS_METHOD, doApiCall, useApi } from '../hooks/useApi';
@@ -18,8 +18,8 @@ import MenuBar from '../components/MenuBar';
 export default function WalletScreen() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [users, usersLoading, usersError, forceUsersRefresh] = useApi(AXIOS_METHOD.GET, `/wallet/${id}`, false, id);
-  const [transactions, transactionsLoading, transactionsError, onLoadMore, hasMore, resetTransactionTable] = useTransactions(id);
+  const [walletData, walletDataLoading, walletDataError, refreshWalletData] = useApi(AXIOS_METHOD.GET, `/wallet/${id}`, false, id);
+  const [transactionsData, transactionsDataLoading, transactionsDataError, onLoadMore, hasMore, resetTransactionTable] = useTransactions(id);
   const [openNewUser, setOpenNewUser] = useState(false);
   const [openNewTranscation, setOpenNewTranscation] = useState(false);
 
@@ -41,7 +41,7 @@ export default function WalletScreen() {
 
   function handleAccessRemove(name) {
     doApiCall(AXIOS_METHOD.POST, '/user/search', (userId) => {
-      doApiCall(AXIOS_METHOD.POST, `/wallet/${id}/remove_access`, () => forceUsersRefresh(), false, { user_id: userId });
+      doApiCall(AXIOS_METHOD.POST, `/wallet/${id}/remove_access`, () => refreshWalletData(), false, { user_id: userId });
     }, false, { name });
   }
 
@@ -49,64 +49,88 @@ export default function WalletScreen() {
     doApiCall(AXIOS_METHOD.DELETE, `/transaction/${transactionId}`, () => resetTransactionTable());
   }
 
-  if (usersError || transactionsError) {
-    return <Typography>{usersError || transactionsError}</Typography>;
+  if (walletDataError || transactionsDataError) {
+    return <Typography>{walletDataError || transactionsDataError}</Typography>;
   }
 
   return (
     <Container maxWidth="lg">
-      <Grid container component={Paper} spacing={2} elevation={2}>
-        <Grid item lg={12} md={12} xs={12}>
+      <Grid container component={Paper} elevation={2}>
+        <Grid xs={12}>
           <MenuBar />
         </Grid>
-        <Grid item>
-          <Grid container spacing={2} sx={{ pb: 2, pr: 2 }}>
+        <Grid item sx={{ m: 2 }}>
+          <Grid container spacing={4}>
             <Grid item xs={12}>
-              <Typography variant="h2">{users?.name}</Typography>
+              <Typography variant="h2" textAlign="center">{walletData?.name}</Typography>
             </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body1">{users?.description}</Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="h5">Users</Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Grid container spacing={1}>
-                {usersLoading ? <LinearProgress /> : users && users?.access?.map(((user) => <Grid item key={user.id}><Chip variant="outlined" label={user.name} onDelete={() => handleAccessRemove(user.name)} /></Grid>))}
+            <Grid item xs={12} sx={{ ml: 2 }}>
+              <Grid container component={Paper} spacing={2} elevation={1}>
                 <Grid item>
-                  <Chip icon={<AddIcon />} onClick={handleNewUserOpen} variant="outlined" sx={{ minWidth: 50 }} />
+                  <Typography variant="h6">Description</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body1" sx={{ minHeight: 50, pb: 2, pr: 2 }}>{walletData?.description}</Typography>
                 </Grid>
               </Grid>
-              <AddNewUserDialog
-                open={openNewUser}
-                handleClose={handleNewUserClose}
-                id={id}
-                forceUsersRefresh={forceUsersRefresh}
-              />
             </Grid>
-            <Grid item xs={12}>
-              {transactionsLoading ? <LinearProgress /> : transactions && (
-                <TransactionsTable transactionData={transactions} onDelete={handleTransactionDelete} resetTransactionTable={resetTransactionTable} />
-              )}
-            </Grid>
-            <Grid item xs={12}>
-              {hasMore && <Button variant="contained" onClick={onLoadMore} fullWidth>Load more</Button>}
-            </Grid>
-            <Grid item xs={12}>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <Button variant="contained" onClick={handleNewTranscationOpen} color="success" fullWidth>Add new transaction</Button>
-                  <AddNewTransactionDialog
-                    open={openNewTranscation}
-                    handleClose={handleNewTranscationClose}
+            <Grid item xs={12} sx={{ ml: 2 }}>
+              <Grid container component={Paper} spacing={2} elevation={1}>
+                <Grid item xs={12}>
+                  <Typography variant="h6">Users</Typography>
+                </Grid>
+                <Grid item xs={12} sx={{ mb: 2 }}>
+                  <Grid container spacing={1}>
+                    {walletDataLoading ? <LinearProgress /> : walletData && walletData?.access?.map(((user) => <Grid item key={user.id}><Chip variant="outlined" label={user.name} onDelete={() => handleAccessRemove(user.name)} /></Grid>))}
+                    <Grid item>
+                      <Chip icon={<AddIcon />} onClick={handleNewUserOpen} variant="outlined" sx={{ minWidth: 50 }} />
+                    </Grid>
+                  </Grid>
+                  <AddNewUserDialog
+                    open={openNewUser}
+                    handleClose={handleNewUserClose}
                     id={id}
-                    resetTransactionTable={resetTransactionTable}
+                    forceUsersRefresh={refreshWalletData}
                   />
                 </Grid>
-                <Grid item xs={6}>
-                  <Button onClick={() => navigate('/wallets')} variant="contained" color="error" fullWidth>Back</Button>
+              </Grid>
+            </Grid>
+            <Grid item xs={12} sx={{ ml: 2 }}>
+              <Grid container component={Paper} spacing={2} elevation={1}>
+                <Grid item xs={12}>
+                  <Typography variant="h6">Transactions</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  {transactionsDataLoading ? <LinearProgress /> : transactionsData && (
+                    <TransactionsTable transactionsData={transactionsData} onDelete={handleTransactionDelete} resetTransactionTable={resetTransactionTable} />
+                  )}
                 </Grid>
               </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+        {hasMore && (
+          <Grid item xs={12}>
+            <Grid container>
+              <Grid item xs={12} sx={{ ml: 2, mr: 2 }}>
+                <Button variant="contained" onClick={onLoadMore} fullWidth>Load more</Button>
+              </Grid>
+            </Grid>
+          </Grid>
+        )}
+        <Grid item xs={12} sx={{ m: 2 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <Button variant="contained" onClick={handleNewTranscationOpen} color="success" fullWidth>Add new transaction</Button>
+              <AddNewTransactionDialog
+                open={openNewTranscation}
+                handleClose={handleNewTranscationClose}
+                id={id}
+                resetTransactionTable={resetTransactionTable}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Button onClick={() => navigate('/wallets')} variant="contained" color="error" fullWidth>Back</Button>
             </Grid>
           </Grid>
         </Grid>

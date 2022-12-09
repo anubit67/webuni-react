@@ -60,12 +60,12 @@ export default function modifyTransactionDialog({
         }}
       >
         <Form>
-          <DialogTitle>Modify transaction</DialogTitle>
+          <DialogTitle variant="h5" textAlign="center" fontWeight={500}>Modify transaction</DialogTitle>
           <DialogContent>
-            <Field name="title" type="textfield" component={TextField} label="Description" variant="outlined" fullWidth validate={validator} />
+            <Field name="title" type="textfield" component={TextField} label="Description" variant="outlined" fullWidth validate={validator} sx={{ pb: 3, mt: 3 }} />
             <Field name="amount" type="textfield" component={TextField} label="Amount" variant="outlined" fullWidth validate={validator} />
           </DialogContent>
-          <DialogActions>
+          <DialogActions sx={{ pl: 3, pr: 3, pb: 3 }}>
             <Button type="submit" variant="contained" fullWidth>Modify</Button>
             <Button variant="contained" color="error" fullWidth onClick={handleClose}>Cancel</Button>
           </DialogActions>

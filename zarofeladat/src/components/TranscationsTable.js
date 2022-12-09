@@ -10,10 +10,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import ModifyTransactionDialog from '../Dialogs/ModifyTransactionDialog';
 import { useAuth } from '../hooks/useAuth';
 
-const columns = ['Who', 'Description', 'Amount', 'Date', 'Modify', 'Delete'];
+const columns = ['Who', 'Description', 'Amount', 'Date'];
 
 export default function TransactionsTable({
-  transactionData, onDelete, resetTransactionTable,
+  transactionsData, onDelete, resetTransactionTable,
 }) {
   const [openModifyTransaction, setModifyTransaction] = useState(false);
   const { sessionUser } = useAuth();
@@ -53,7 +53,7 @@ export default function TransactionsTable({
   }
 
   return (
-    <TableContainer component={Paper} elevation={1}>
+    <TableContainer>
       <Table>
         <TableHead>
           <TableRow>
@@ -62,10 +62,11 @@ export default function TransactionsTable({
                 <Typography>{column}</Typography>
               </TableCell>
             ))}
+            <TableCell />
           </TableRow>
         </TableHead>
         <TableBody>
-          {transactionData.sort(sortByDate).map((transaction) => (
+          {transactionsData.sort(sortByDate).map((transaction) => (
             <TableRow key={transaction.id}>
               <TableCell>
                 <Typography>{transaction.created_by.name}</Typography>
@@ -78,26 +79,22 @@ export default function TransactionsTable({
                 <Typography>{formatDate(transaction.created_at)}</Typography>
               </TableCell>
               {isOwner(transaction.created_by.name)
-              && (
-              <>
-                <TableCell>
-                  <IconButton onClick={handleModifyTranscationOpen}>
-                    <EditIcon />
-                  </IconButton>
-                  <ModifyTransactionDialog
-                    id={transaction.id}
-                    open={openModifyTransaction}
-                    handleClose={handleModifyTranscationClose}
-                    resetTransactionTable={resetTransactionTable}
-                  />
-                </TableCell>
-                <TableCell>
-                  <IconButton onClick={() => onDelete(transaction.id)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
-              </>
-              )}
+                ? (
+                  <TableCell align="right">
+                    <IconButton onClick={handleModifyTranscationOpen}>
+                      <EditIcon />
+                    </IconButton>
+                    <ModifyTransactionDialog
+                      id={transaction.id}
+                      open={openModifyTransaction}
+                      handleClose={handleModifyTranscationClose}
+                      resetTransactionTable={resetTransactionTable}
+                    />
+                    <IconButton onClick={() => onDelete(transaction.id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                ) : (<TableCell />)}
             </TableRow>
           ))}
         </TableBody>
