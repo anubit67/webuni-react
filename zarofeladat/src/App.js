@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth';
-import LoginScreen from './screens/LoginScreen';
-import MyWalletsScreen from './screens/MyWalletsScreen';
-import WalletScreen from './screens/WalletScreen';
-import WalletsScreen from './screens/WalletsScreen';
+import LoginScreen from './screens/login/LoginScreen';
+import OneWalletScreen from './screens/onewallet/OneWalletScreen';
+import MyWalletsScreen from './screens/wallets/MyWalletsScreen';
+import WalletsScreen from './screens/wallets/WalletsScreen';
 
 function App() {
   const { authToken } = useAuth();
@@ -14,7 +14,7 @@ function App() {
       <Routes>
         <Route element={<WalletsScreen />} path="/wallets" />
         <Route element={<MyWalletsScreen />} path="/mywallets" />
-        <Route element={<WalletScreen />} path="wallet/:id" />
+        <Route element={<OneWalletScreen />} path="wallet/:id" />
         <Route path="/" element={<Navigate to="/wallets" replace />} />
         <Route element={<h1>404 - Not found</h1>} path="*" />
       </Routes>

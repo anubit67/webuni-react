@@ -7,9 +7,9 @@ import {
   Formik, Form, Field,
 } from 'formik';
 import { TextField } from 'formik-mui';
-import RegistrationDialog from '../Dialogs/RegistrationDialog';
-import { doApiCall, AXIOS_METHOD } from '../hooks/useApi';
-import { useAuth } from '../hooks/useAuth';
+import RegistrationDialog from './dialog/RegistrationDialog';
+import { doApiCall, AXIOS_METHOD } from '../../hooks/useApi';
+import { useAuth } from '../../hooks/useAuth';
 
 export default function LoginScreen() {
   const { handleLoginResult } = useAuth();
@@ -27,35 +27,37 @@ export default function LoginScreen() {
     setOpen(false);
   };
 
+  function onSubmit(values, { setFieldError, setSubmitting }) {
+    setSubmitting(true);
+
+    const onFailure = (apiError) => {
+      setFieldError('name', apiError);
+      setSubmitting(false);
+    };
+
+    const onSuccess = (data) => {
+      handleLoginResult(data);
+      setSubmitting(false);
+      navigate('/wallets');
+    };
+
+    doApiCall(AXIOS_METHOD.POST, '/login', onSuccess, onFailure, values);
+  }
+
   return (
     <Formik
       initialValues={{
         name: '', password: '',
       }}
-      onSubmit={(values, { setFieldError, setSubmitting }) => {
-        setSubmitting(true);
-
-        const onFailure = (apiError) => {
-          setFieldError('name', apiError);
-          setSubmitting(false);
-        };
-
-        const onSuccess = (data) => {
-          handleLoginResult(data);
-          setSubmitting(false);
-          navigate('/wallets');
-        };
-
-        doApiCall(AXIOS_METHOD.POST, '/login', onSuccess, onFailure, values);
-      }}
+      onSubmit={onSubmit}
     >
       <Form>
         <Container maxWidth="lg">
-          <Grid container spacing={1} paddingTop="25%">
+          <Grid container spacing={2} justifyContent="center" alignItems="center" padding={5} mt="25%">
             <Grid item lg={8} md={6} xs={12}>
               <Grid container spacing={2} direction="column">
                 <Grid item lg={3} md={4} xs={12}>
-                  <Typography variant="h2" fontFamily="fantasy" color="purple">Wallet App</Typography>
+                  <Typography variant="h2" color="purple" fontWeight={500}>Wallet App</Typography>
                 </Grid>
                 <Grid item lg={3} md={4} xs={12}>
                   <Typography variant="h5">Create and share your wallets with your friends to track your financials</Typography>
@@ -64,7 +66,7 @@ export default function LoginScreen() {
             </Grid>
             <Grid item lg={4} md={6} xs={12}>
               <Card elevation={3}>
-                <Grid container spacing={1} direction="column" p={1}>
+                <Grid container spacing={2} direction="column" p={3}>
                   <Grid item lg={3} md={4} xs={12}>
                     <Field name="name" type="textfield" component={TextField} label="Username" fullWidth />
                   </Grid>

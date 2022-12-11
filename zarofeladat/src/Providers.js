@@ -1,5 +1,5 @@
 import { BrowserRouter } from 'react-router-dom';
-import { CssBaseline, ThemeProvider } from '@mui/material';
+import { CssBaseline, ThemeProvider, useMediaQuery } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import {
   createContext, useContext, useMemo, useState,
@@ -13,7 +13,8 @@ export function useMyTheme() {
 }
 
 export default function Providers({ children }) {
-  const [mode, setMode] = useState('light');
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const [mode, setMode] = useState(prefersDarkMode ? 'dark' : 'light');
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {

@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-no-bind */
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';

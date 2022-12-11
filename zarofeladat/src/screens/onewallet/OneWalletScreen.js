@@ -1,25 +1,28 @@
-/* eslint-disable max-len */
-/* eslint-disable react/jsx-no-bind */
 import React, { useState } from 'react';
 import {
   Button,
   Chip, Grid, LinearProgress, Paper, Typography,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { Box, Container } from '@mui/system';
+import { Container } from '@mui/system';
 import { useNavigate, useParams } from 'react-router-dom';
-import TransactionsTable from '../components/TranscationsTable';
-import { AXIOS_METHOD, doApiCall, useApi } from '../hooks/useApi';
-import AddNewUserDialog from '../Dialogs/AddUserDialog';
-import AddNewTransactionDialog from '../Dialogs/AddNewTransactionDialog';
-import useTransactions from '../hooks/useTransactions';
-import MenuBar from '../components/MenuBar';
+import TransactionsTable from './component/TranscationsTable';
+import { AXIOS_METHOD, doApiCall, useApi } from '../../hooks/useApi';
+import AddNewUserDialog from './dialog/AddUserDialog';
+import AddNewTransactionDialog from './dialog/AddNewTransactionDialog';
+import useTransactions from './hook/useTransactions';
+import MenuBar from '../../components/MenuBar';
 
-export default function WalletScreen() {
+export default function OneWalletScreen() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [walletData, walletDataLoading, walletDataError, refreshWalletData] = useApi(AXIOS_METHOD.GET, `/wallet/${id}`, false, id);
-  const [transactionsData, transactionsDataLoading, transactionsDataError, onLoadMore, hasMore, resetTransactionTable] = useTransactions(id);
+  const [transactionsData,
+    transactionsDataLoading,
+    transactionsDataError,
+    onLoadMore,
+    hasMore,
+    resetTransactionTable] = useTransactions(id);
   const [openNewUser, setOpenNewUser] = useState(false);
   const [openNewTranscation, setOpenNewTranscation] = useState(false);
 
@@ -56,17 +59,17 @@ export default function WalletScreen() {
   return (
     <Container maxWidth="lg">
       <Grid container component={Paper} elevation={2}>
-        <Grid xs={12}>
+        <Grid item xs={12}>
           <MenuBar />
         </Grid>
         <Grid item sx={{ m: 2 }}>
           <Grid container spacing={4}>
             <Grid item xs={12}>
-              <Typography variant="h2" textAlign="center">{walletData?.name}</Typography>
+              <Typography variant="h4" textAlign="center">{walletData?.name}</Typography>
             </Grid>
             <Grid item xs={12} sx={{ ml: 2 }}>
               <Grid container component={Paper} spacing={2} elevation={1}>
-                <Grid item>
+                <Grid item xs={12}>
                   <Typography variant="h6">Description</Typography>
                 </Grid>
                 <Grid item xs={12}>
@@ -102,7 +105,11 @@ export default function WalletScreen() {
                 </Grid>
                 <Grid item xs={12}>
                   {transactionsDataLoading ? <LinearProgress /> : transactionsData && (
-                    <TransactionsTable transactionsData={transactionsData} onDelete={handleTransactionDelete} resetTransactionTable={resetTransactionTable} />
+                    <TransactionsTable
+                      transactionsData={transactionsData}
+                      onDelete={handleTransactionDelete}
+                      resetTransactionTable={resetTransactionTable}
+                    />
                   )}
                 </Grid>
               </Grid>

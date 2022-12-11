@@ -1,22 +1,32 @@
-/* eslint-disable react/jsx-no-bind */
-/* eslint-disable consistent-return */
 import React from 'react';
 import {
-  Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid,
+  Button, Dialog, DialogActions, DialogContent, DialogTitle,
 } from '@mui/material';
 import {
   Formik, Form, Field,
 } from 'formik';
 import { TextField } from 'formik-mui';
-import { AXIOS_METHOD, doApiCall } from '../hooks/useApi';
+import { AXIOS_METHOD, doApiCall } from '../../../hooks/useApi';
+import { validator } from '../../../utils/utils';
 
 export default function ModifyWalletDialog({
   id, open, handleClose, forceWalletRefresh,
 }) {
-  function validator(value) {
-    if (!value && value.length === 0) {
-      return 'Field must not be empty';
-    }
+  function onSubmit(values, { setSubmitting, setFieldError }) {
+    setSubmitting(true);
+
+    const onSuccess = () => {
+      setSubmitting(false);
+      forceWalletRefresh();
+      handleClose();
+    };
+
+    const onFailure = (apiError) => {
+      setSubmitting(false);
+      setFieldError('name', apiError);
+    };
+
+    doApiCall(AXIOS_METHOD.PATCH, `/wallet/${id}`, onSuccess, onFailure, values);
   }
 
   return (
@@ -26,22 +36,7 @@ export default function ModifyWalletDialog({
           name: '',
           description: '',
         }}
-        onSubmit={(values, { setSubmitting, setFieldError }) => {
-          setSubmitting(true);
-
-          const onSuccess = () => {
-            setSubmitting(false);
-            forceWalletRefresh();
-            handleClose();
-          };
-
-          const onFailure = (apiError) => {
-            setSubmitting(false);
-            setFieldError('name', apiError);
-          };
-
-          doApiCall(AXIOS_METHOD.PATCH, `/wallet/${id}`, onSuccess, onFailure, values);
-        }}
+        onSubmit={onSubmit}
       >
         <Form>
           <DialogTitle variant="h5" textAlign="center" fontWeight={500}>Modify wallet</DialogTitle>

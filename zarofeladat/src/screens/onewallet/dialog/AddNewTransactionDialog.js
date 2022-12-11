@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-no-bind */
 import React from 'react';
 import {
   Button, Dialog, DialogActions, DialogContent, DialogTitle,
@@ -7,16 +6,27 @@ import {
   Formik, Form, Field,
 } from 'formik';
 import { TextField } from 'formik-mui';
-import { AXIOS_METHOD, doApiCall } from '../hooks/useApi';
+import { AXIOS_METHOD, doApiCall } from '../../../hooks/useApi';
+import { validator } from '../../../utils/utils';
 
 export default function AddNewTransactionDialog({
   open, handleClose, id, resetTransactionTable,
 }) {
-  function validator(value) {
-    if (!value && value.length === 0) {
-      return 'Field must not be empty';
-    }
-    return '';
+  function onSubmit({ title, amount }, { setSubmitting, setFieldError }) {
+    setSubmitting(true);
+
+    const onSuccess = () => {
+      setSubmitting(false);
+      resetTransactionTable();
+      handleClose();
+    };
+
+    const onFailure = (apiError) => {
+      setSubmitting(false);
+      setFieldError('title', apiError);
+    };
+
+    doApiCall(AXIOS_METHOD.PUT, '/transactions', onSuccess, onFailure, { wallet_id: id, title, amount });
   }
 
   return (
@@ -26,22 +36,7 @@ export default function AddNewTransactionDialog({
           title: '',
           amount: 0,
         }}
-        onSubmit={({ title, amount }, { setSubmitting, setFieldError }) => {
-          setSubmitting(true);
-
-          const onSuccess = () => {
-            setSubmitting(false);
-            resetTransactionTable();
-            handleClose();
-          };
-
-          const onFailure = (apiError) => {
-            setSubmitting(false);
-            setFieldError('title', apiError);
-          };
-
-          doApiCall(AXIOS_METHOD.PUT, '/transactions', onSuccess, onFailure, { wallet_id: id, title, amount });
-        }}
+        onSubmit={onSubmit}
       >
         <Form>
           <DialogTitle variant="h5" textAlign="center" fontWeight={500}>Add transaction</DialogTitle>

@@ -1,8 +1,8 @@
-import React, { useCallback, useContext } from 'react';
+import { createContext, useCallback, useContext } from 'react';
 import { setApiToken } from './useApi';
 import useLocalStorage from './useLocalStorage';
 
-const AuthContext = React.createContext();
+const AuthContext = createContext();
 AuthContext.displayName = 'AuthContext';
 
 export function AuthContextProvider({ children }) {
