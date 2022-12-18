@@ -8,10 +8,10 @@ import { Container } from '@mui/system';
 import { useNavigate, useParams } from 'react-router-dom';
 import TransactionsTable from './component/TranscationsTable';
 import { AXIOS_METHOD, doApiCall, useApi } from '../../hooks/useApi';
-import AddNewUserDialog from './dialog/AddUserDialog';
-import AddNewTransactionDialog from './dialog/AddNewTransactionDialog';
-import useTransactions from './hook/useTransactions';
+import AddNewTransactionDialog from '../../dialogs/AddNewTransactionDialog';
+import useTransactions from '../../hooks/useTransactions';
 import MenuBar from '../../components/MenuBar';
+import AddNewUserDialog from '../../dialogs/AddUserDialog';
 
 export default function OneWalletScreen() {
   const { id } = useParams();

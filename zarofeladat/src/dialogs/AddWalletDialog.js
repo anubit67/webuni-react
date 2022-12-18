@@ -5,18 +5,18 @@ import {
   Formik, Form, Field,
 } from 'formik';
 import { TextField } from 'formik-mui';
-import { AXIOS_METHOD, doApiCall } from '../../../hooks/useApi';
-import { basicValidator } from '../../../utils/utils';
+import { AXIOS_METHOD, doApiCall } from '../hooks/useApi';
+import { basicValidator } from '../utils/utils';
 
-export default function ModifyWalletDialog({
-  id, open, handleClose, forceWalletRefresh,
+export default function AddWalletDialog({
+  open, handleClose, forceWalletRefresh: refreshWalletData,
 }) {
   const onSubmit = (values, { setSubmitting, setFieldError }) => {
     setSubmitting(true);
 
     const onSuccess = () => {
       setSubmitting(false);
-      forceWalletRefresh();
+      refreshWalletData();
       handleClose();
     };
 
@@ -25,7 +25,7 @@ export default function ModifyWalletDialog({
       setFieldError('name', apiError);
     };
 
-    doApiCall(AXIOS_METHOD.PATCH, `/wallet/${id}`, onSuccess, onFailure, values);
+    doApiCall(AXIOS_METHOD.PUT, '/wallet', onSuccess, onFailure, values);
   };
 
   if (!open) {
@@ -42,12 +42,13 @@ export default function ModifyWalletDialog({
         onSubmit={onSubmit}
       >
         <Form>
-          <DialogTitle variant="h5" textAlign="center" fontWeight={500}>Modify wallet</DialogTitle>
+          <DialogTitle variant="h5" textAlign="center" fontWeight={500}>Add new wallet</DialogTitle>
           <DialogContent>
-            <Field name="description" type="textfield" component={TextField} label="Description" variant="outlined" multiline rows={4} fullWidth validate={basicValidator} sx={{ mt: 3 }} />
+            <Field name="name" validate={basicValidator} type="textfield" component={TextField} label="Wallet name" variant="outlined" fullWidth sx={{ pb: 3, mt: 3 }} />
+            <Field name="description" type="textfield" component={TextField} label="Description" variant="outlined" multiline rows={4} fullWidth />
           </DialogContent>
           <DialogActions sx={{ pl: 3, pr: 3, pb: 3 }}>
-            <Button type="submit" variant="contained" fullWidth>Modify</Button>
+            <Button type="submit" variant="contained" fullWidth>Add</Button>
             <Button variant="contained" color="error" fullWidth onClick={handleClose}>Cancel</Button>
           </DialogActions>
         </Form>

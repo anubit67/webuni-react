@@ -5,8 +5,8 @@ import {
   Formik, Form, Field,
 } from 'formik';
 import { TextField } from 'formik-mui';
-import { AXIOS_METHOD, doApiCall } from '../../../hooks/useApi';
-import { basicValidator } from '../../../utils/utils';
+import { AXIOS_METHOD, doApiCall } from '../hooks/useApi';
+import { basicValidator } from '../utils/utils';
 
 export default function AddNewUserDialog({
   open, handleClose, id, forceUsersRefresh,

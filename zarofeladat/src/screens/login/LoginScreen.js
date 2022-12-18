@@ -7,7 +7,7 @@ import {
   Formik, Form, Field,
 } from 'formik';
 import { TextField } from 'formik-mui';
-import RegistrationDialog from './dialog/RegistrationDialog';
+import RegistrationDialog from '../../dialogs/RegistrationDialog';
 import { doApiCall, AXIOS_METHOD } from '../../hooks/useApi';
 import { useAuth } from '../../hooks/useAuth';
 

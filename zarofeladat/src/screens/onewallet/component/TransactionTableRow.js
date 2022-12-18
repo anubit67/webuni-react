@@ -5,11 +5,12 @@ import {
   IconButton, TableCell, TableRow, Typography,
 } from '@mui/material';
 import { useState } from 'react';
-import ModifyTransactionDialog from '../dialog/ModifyTransactionDialog';
 import {
-  renderAmount, formatDate, DISPLAY_INLINE_FLEX, DISPLAY_NONE,
+  formatDate, DISPLAY_INLINE_FLEX, DISPLAY_NONE,
 } from '../../../utils/utils';
 import { useAuth } from '../../../hooks/useAuth';
+import RenderAmount from '../../../components/RenderAmount';
+import ModifyTransactionDialog from '../../../dialogs/ModifyTransactionDialog';
 
 export default function TransactionTableRow({ transaction, resetTransactionTable, onDelete }) {
   const [openModifyTransaction, setModifyTransaction] = useState(false);
@@ -46,7 +47,7 @@ export default function TransactionTableRow({ transaction, resetTransactionTable
       <TableCell>
         <Typography>{title}</Typography>
       </TableCell>
-      <TableCell>{renderAmount(amount)}</TableCell>
+      <TableCell><RenderAmount amount={amount} /></TableCell>
       <TableCell>
         <Typography>{formatDate(created_at)}</Typography>
       </TableCell>

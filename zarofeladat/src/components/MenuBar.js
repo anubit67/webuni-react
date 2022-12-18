@@ -71,7 +71,7 @@ function MenuBar() {
                 vertical: 'top',
                 horizontal: 'right',
               }}
-              open={Boolean(anchorEl)}
+              open={!!anchorEl}
               onClose={handleClose}
             >
               <Typography sx={{ p: 1 }} variant="h5" textAlign="center">

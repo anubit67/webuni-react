@@ -5,7 +5,7 @@ import { Container } from '@mui/system';
 import { useState } from 'react';
 import MenuBar from '../../components/MenuBar';
 import Wallet from './component/Wallet';
-import AddWalletDialog from './dialog/AddWalletDialog';
+import AddWalletDialog from '../../dialogs/AddWalletDialog';
 import { AXIOS_METHOD, doApiCall, useApi } from '../../hooks/useApi';
 
 export default function WalletsScreen({ filterBy }) {

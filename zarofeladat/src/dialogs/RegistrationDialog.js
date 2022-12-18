@@ -7,9 +7,9 @@ import {
   Formik, Form, Field, ErrorMessage,
 } from 'formik';
 import { TextField, CheckboxWithLabel } from 'formik-mui';
-import { doApiCall, AXIOS_METHOD } from '../../../hooks/useApi';
-import { useAuth } from '../../../hooks/useAuth';
-import { passwordAgainValidator, passwordValidator, usermameValidator } from '../../../utils/utils';
+import { doApiCall, AXIOS_METHOD } from '../hooks/useApi';
+import { useAuth } from '../hooks/useAuth';
+import { passwordAgainValidator, passwordValidator, usermameValidator } from '../utils/utils';
 
 export default function RegistrationDialog({ open, onClose }) {
   const { handleLoginResult } = useAuth();

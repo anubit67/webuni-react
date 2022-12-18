@@ -5,27 +5,27 @@ import {
   Formik, Form, Field,
 } from 'formik';
 import { TextField } from 'formik-mui';
-import { AXIOS_METHOD, doApiCall } from '../../../hooks/useApi';
-import { basicValidator } from '../../../utils/utils';
+import { AXIOS_METHOD, doApiCall } from '../hooks/useApi';
+import { basicValidator } from '../utils/utils';
 
-export default function AddWalletDialog({
-  open, handleClose, forceWalletRefresh: refreshWalletData,
+export default function AddNewTransactionDialog({
+  open, handleClose, id, resetTransactionTable,
 }) {
-  const onSubmit = (values, { setSubmitting, setFieldError }) => {
+  const onSubmit = ({ title, amount }, { setSubmitting, setFieldError }) => {
     setSubmitting(true);
 
     const onSuccess = () => {
       setSubmitting(false);
-      refreshWalletData();
+      resetTransactionTable();
       handleClose();
     };
 
     const onFailure = (apiError) => {
       setSubmitting(false);
-      setFieldError('name', apiError);
+      setFieldError('title', apiError);
     };
 
-    doApiCall(AXIOS_METHOD.PUT, '/wallet', onSuccess, onFailure, values);
+    doApiCall(AXIOS_METHOD.PUT, '/transactions', onSuccess, onFailure, { wallet_id: id, title, amount });
   };
 
   if (!open) {
@@ -36,16 +36,16 @@ export default function AddWalletDialog({
     <Dialog open onClose={handleClose}>
       <Formik
         initialValues={{
-          name: '',
-          description: '',
+          title: '',
+          amount: 0,
         }}
         onSubmit={onSubmit}
       >
         <Form>
-          <DialogTitle variant="h5" textAlign="center" fontWeight={500}>Add new wallet</DialogTitle>
+          <DialogTitle variant="h5" textAlign="center" fontWeight={500}>Add transaction</DialogTitle>
           <DialogContent>
-            <Field name="name" validate={basicValidator} type="textfield" component={TextField} label="Wallet name" variant="outlined" fullWidth sx={{ pb: 3, mt: 3 }} />
-            <Field name="description" type="textfield" component={TextField} label="Description" variant="outlined" multiline rows={4} fullWidth />
+            <Field name="title" type="textfield" component={TextField} label="Description" variant="outlined" fullWidth validate={basicValidator} sx={{ pb: 3, mt: 3 }} />
+            <Field name="amount" type="number" component={TextField} label="Amount" variant="outlined" fullWidth validate={basicValidator} />
           </DialogContent>
           <DialogActions sx={{ pl: 3, pr: 3, pb: 3 }}>
             <Button type="submit" variant="contained" fullWidth>Add</Button>

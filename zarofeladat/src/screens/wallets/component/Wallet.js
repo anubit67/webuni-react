@@ -9,9 +9,10 @@ import InfoIcon from '@mui/icons-material/Info';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ConfirmDialog from '../../../components/ConfirmDialog';
-import ModifyWalletDialog from '../dialog/ModifyWalletDialog';
-import { DISPLAY_INLINE_FLEX, DISPLAY_NONE, renderAmount } from '../../../utils/utils';
+import ModifyWalletDialog from '../../../dialogs/ModifyWalletDialog';
+import { DISPLAY_INLINE_FLEX, DISPLAY_NONE } from '../../../utils/utils';
 import { useAuth } from '../../../hooks/useAuth';
+import RenderAmount from '../../../components/RenderAmount';
 
 export default function Wallet({
   name, description, balance, id, handleEvent, forceWalletRefresh, owner,
@@ -79,7 +80,7 @@ export default function Wallet({
               </Typography>
             </Grid>
             <Grid item>
-              {renderAmount(balance)}
+              <RenderAmount amount={balance} />
             </Grid>
           </Grid>
         </CardContent>

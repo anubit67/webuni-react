@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { AXIOS_METHOD, doApiCall } from '../../../hooks/useApi';
+import { AXIOS_METHOD, doApiCall } from './useApi';
 
 export default function useTransactions(walletId, limit = 5) {
   const [transactions, setTransactions] = useState(false);
