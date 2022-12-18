@@ -29,10 +29,10 @@ function MenuBar() {
     setAnchorEl(null);
   };
 
-  function handleLogout() {
+  const handleLogout = () => {
     logout();
     navigate('/');
-  }
+  };
 
   return (
     <Box>

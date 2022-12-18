@@ -11,7 +11,7 @@ import { basicValidator } from '../../../utils/utils';
 export default function AddWalletDialog({
   open, handleClose, forceWalletRefresh: refreshWalletData,
 }) {
-  function onSubmit(values, { setSubmitting, setFieldError }) {
+  const onSubmit = (values, { setSubmitting, setFieldError }) => {
     setSubmitting(true);
 
     const onSuccess = () => {
@@ -26,10 +26,14 @@ export default function AddWalletDialog({
     };
 
     doApiCall(AXIOS_METHOD.PUT, '/wallet', onSuccess, onFailure, values);
+  };
+
+  if (!open) {
+    return null;
   }
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open onClose={handleClose}>
       <Formik
         initialValues={{
           name: '',

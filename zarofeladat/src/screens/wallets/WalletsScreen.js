@@ -7,25 +7,18 @@ import MenuBar from '../../components/MenuBar';
 import Wallet from './component/Wallet';
 import AddWalletDialog from './dialog/AddWalletDialog';
 import { AXIOS_METHOD, doApiCall, useApi } from '../../hooks/useApi';
-import { useAuth } from '../../hooks/useAuth';
 
 export default function WalletsScreen({ filterBy }) {
   const [open, setOpen] = useState(false);
   const [data, loading, error, forceWalletRefresh] = useApi(AXIOS_METHOD.GET, '/wallets', false);
 
-  const { sessionUser } = useAuth();
-
-  function isOwner(name) {
-    return sessionUser.name === name;
-  }
-
-  function handleOpen() {
+  const handleOpen = () => {
     setOpen(true);
-  }
+  };
 
-  function handleClose() {
+  const handleClose = () => {
     setOpen(false);
-  }
+  };
 
   function handleDelete(id) {
     const onSuccess = () => {
@@ -45,56 +38,58 @@ export default function WalletsScreen({ filterBy }) {
   }
 
   return (
-    <Container maxWidth="lg">
-      <Grid container spacing={3}>
-        <Grid item lg={12} md={12} xs={12}>
-          <MenuBar />
+    <>
+      <MenuBar />
+      <Container maxWidth="lg">
+        <Grid container spacing={3} sx={{ pt: 3 }}>
+          {filterBy ? (data && data.filter(filterBy).map((d) => (
+            <Wallet
+              key={d.id}
+              name={d.name}
+              description={d.description}
+              balance={d.balance}
+              id={d.id}
+              handleEvent={() => handleDelete(d.id)}
+              forceWalletRefresh={forceWalletRefresh}
+              owner={d.created_by.name}
+            />
+          ))) : (data && data.map((d) => (
+            <Wallet
+              key={d.id}
+              name={d.name}
+              description={d.description}
+              balance={d.balance}
+              id={d.id}
+              handleEvent={() => handleDelete(d.id)}
+              forceWalletRefresh={forceWalletRefresh}
+              owner={d.created_by.name}
+            />
+          )))}
+          <Grid item lg={3} md={4} xs={12}>
+            <Button
+              onClick={handleOpen}
+              variant="contained"
+              color="success"
+              fullWidth
+              sx={{
+                height: 225,
+                transition: 'transform .5s, box-shadow 1s',
+                '&:hover': {
+                  transform: 'scale(1.02) perspective(0px)',
+                },
+              }}
+              elevation={2}
+            >
+              <Typography variant="h5">Add new wallet</Typography>
+            </Button>
+            <AddWalletDialog
+              open={open}
+              handleClose={handleClose}
+              forceWalletRefresh={forceWalletRefresh}
+            />
+          </Grid>
         </Grid>
-        {filterBy ? (data && data.filter(filterBy).map((d) => (
-          <Wallet
-            key={d.id}
-            name={d.name}
-            balance={d.balance}
-            id={d.id}
-            handleEvent={() => handleDelete(d.id)}
-            forceWalletRefresh={forceWalletRefresh}
-            isOwner={() => isOwner(d.created_by.name)}
-          />
-        ))) : (data && data.map((d) => (
-          <Wallet
-            key={d.id}
-            name={d.name}
-            balance={d.balance}
-            id={d.id}
-            handleEvent={() => handleDelete(d.id)}
-            forceWalletRefresh={forceWalletRefresh}
-            isOwner={() => isOwner(d.created_by.name)}
-          />
-        )))}
-        <Grid item lg={3} md={4} xs={12}>
-          <Button
-            onClick={handleOpen}
-            variant="contained"
-            color="success"
-            fullWidth
-            sx={{
-              height: '200px',
-              transition: 'transform .5s, box-shadow 1s',
-              '&:hover': {
-                transform: 'scale(1.02) perspective(0px)',
-              },
-            }}
-            elevation={2}
-          >
-            <Typography variant="h5">Add new wallet</Typography>
-          </Button>
-          <AddWalletDialog
-            open={open}
-            handleClose={handleClose}
-            forceWalletRefresh={forceWalletRefresh}
-          />
-        </Grid>
-      </Grid>
-    </Container>
+      </Container>
+    </>
   );
 }

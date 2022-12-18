@@ -11,7 +11,7 @@ import { basicValidator } from '../../../utils/utils';
 export default function AddNewUserDialog({
   open, handleClose, id, forceUsersRefresh,
 }) {
-  function onSubmit(name, { setSubmitting, setFieldError }) {
+  const onSubmit = (name, { setSubmitting, setFieldError }) => {
     setSubmitting(true);
 
     const onSuccess = () => {
@@ -32,10 +32,14 @@ export default function AddNewUserDialog({
     doApiCall(AXIOS_METHOD.POST, '/user/search', (userId) => {
       doApiCall(AXIOS_METHOD.POST, `/wallet/${id}/grant_access`, onSuccess, onFailure, { user_id: userId });
     }, onFailure, name);
+  };
+
+  if (!open) {
+    return null;
   }
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open onClose={handleClose}>
       <Formik
         initialValues={{
           name: '',

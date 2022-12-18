@@ -10,45 +10,47 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ConfirmDialog from '../../../components/ConfirmDialog';
 import ModifyWalletDialog from '../dialog/ModifyWalletDialog';
-import { renderAmount } from '../../../utils/utils';
+import { DISPLAY_INLINE_FLEX, DISPLAY_NONE, renderAmount } from '../../../utils/utils';
+import { useAuth } from '../../../hooks/useAuth';
 
 export default function Wallet({
-  name, balance, id, handleEvent, forceWalletRefresh, isOwner,
+  name, description, balance, id, handleEvent, forceWalletRefresh, owner,
 }) {
   const [openDelete, setOpenDelete] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
-  const [style, setStyle] = useState({ display: 'none' });
+  const [style, setStyle] = useState(DISPLAY_NONE);
+  const { sessionUser } = useAuth();
   const navigate = useNavigate();
 
-  function handleDeleteOpen() {
+  const handleDeleteOpen = () => {
     setOpenDelete(true);
-  }
+  };
 
-  function handleDeleteClose() {
+  const handleDeleteClose = () => {
     setOpenDelete(false);
-  }
+  };
 
-  function handleEditOpen() {
+  const handleEditOpen = () => {
     setOpenEdit(true);
-  }
+  };
 
-  function handleEditClose() {
+  const handleEditClose = () => {
     setOpenEdit(false);
-  }
+  };
 
   return (
     <Grid item lg={3} md={4} xs={12}>
       <Card
         sx={{
-          minHeight: 200,
+          minHeight: 225,
           transition: 'transform .5s, box-shadow 1s',
           '&:hover': {
             transform: 'scale(1.02)',
           },
         }}
         elevation={2}
-        onMouseEnter={() => setStyle({ display: 'inline-flex' })}
-        onMouseLeave={() => setStyle({ display: 'none' })}
+        onMouseEnter={() => setStyle(DISPLAY_INLINE_FLEX)}
+        onMouseLeave={() => setStyle(DISPLAY_NONE)}
       >
         <CardContent>
           <Grid container justifyContent="center">
@@ -58,6 +60,16 @@ export default function Wallet({
                   {name}
                 </Typography>
               </Button>
+            </Grid>
+          </Grid>
+          <Grid container>
+            <Grid item>
+              <Typography sx={{
+                textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap',
+              }}
+              >
+                {description}
+              </Typography>
             </Grid>
           </Grid>
           <Grid container direction="column" justifyContent="flex-end">
@@ -71,7 +83,7 @@ export default function Wallet({
             </Grid>
           </Grid>
         </CardContent>
-        {isOwner()
+        {(sessionUser.name === owner)
           ? (
             <CardActions>
               <Grid container>

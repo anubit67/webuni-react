@@ -27,7 +27,7 @@ export default function LoginScreen() {
     setOpen(false);
   };
 
-  function onSubmit(values, { setFieldError, setSubmitting }) {
+  const onSubmit = (values, { setFieldError, setSubmitting }) => {
     setSubmitting(true);
 
     const onFailure = (apiError) => {
@@ -42,7 +42,7 @@ export default function LoginScreen() {
     };
 
     doApiCall(AXIOS_METHOD.POST, '/login', onSuccess, onFailure, values);
-  }
+  };
 
   return (
     <Formik

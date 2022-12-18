@@ -6,7 +6,9 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import ModifyTransactionDialog from '../dialog/ModifyTransactionDialog';
-import { renderAmount, formatDate } from '../../../utils/utils';
+import {
+  renderAmount, formatDate, DISPLAY_INLINE_FLEX, DISPLAY_NONE,
+} from '../../../utils/utils';
 import { useAuth } from '../../../hooks/useAuth';
 
 export default function TransactionTableRow({ transaction, resetTransactionTable, onDelete }) {
@@ -17,17 +19,13 @@ export default function TransactionTableRow({ transaction, resetTransactionTable
   } = transaction;
   const { sessionUser } = useAuth();
 
-  function isOwner(name) {
-    return sessionUser.name === name;
-  }
-
-  function handleModifyTranscationOpen() {
+  const handleModifyTranscationOpen = () => {
     setModifyTransaction(true);
-  }
+  };
 
-  function handleModifyTranscationClose() {
+  const handleModifyTranscationClose = () => {
     setModifyTransaction(false);
-  }
+  };
 
   return (
     <TableRow
@@ -39,8 +37,8 @@ export default function TransactionTableRow({ transaction, resetTransactionTable
           transform: 'scale(1.02) perspective(0px)',
         },
       }}
-      onMouseEnter={() => setStyle({ display: 'inline-flex' })}
-      onMouseLeave={() => setStyle({ display: 'none' })}
+      onMouseEnter={() => setStyle(DISPLAY_INLINE_FLEX)}
+      onMouseLeave={() => setStyle(DISPLAY_NONE)}
     >
       <TableCell>
         <Typography>{created_by.name}</Typography>
@@ -52,7 +50,7 @@ export default function TransactionTableRow({ transaction, resetTransactionTable
       <TableCell>
         <Typography>{formatDate(created_at)}</Typography>
       </TableCell>
-      {isOwner(created_by.name)
+      {(sessionUser.name === created_by.name)
         ? (
           <TableCell align="right" sx={{ minWidth: '120px' }}>
             <IconButton onClick={handleModifyTranscationOpen} sx={style}>
