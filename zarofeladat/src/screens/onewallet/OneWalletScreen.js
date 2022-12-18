@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import {
   Button,
-  Chip, Grid, LinearProgress, Paper, Typography,
+  Chip, Grid, LinearProgress, Typography,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { Container } from '@mui/system';
@@ -12,6 +12,7 @@ import AddNewTransactionDialog from '../../dialogs/AddNewTransactionDialog';
 import useTransactions from '../../hooks/useTransactions';
 import MenuBar from '../../components/MenuBar';
 import AddNewUserDialog from '../../dialogs/AddUserDialog';
+import UserChip from './component/UserChip';
 
 export default function OneWalletScreen() {
   const { id } = useParams();
@@ -60,14 +61,14 @@ export default function OneWalletScreen() {
     <>
       <MenuBar />
       <Container maxWidth="lg">
-        <Grid container component={Paper} elevation={2} sx={{ mt: 3 }}>
+        <Grid container>
           <Grid item sx={{ m: 2 }}>
             <Grid container spacing={4}>
               <Grid item xs={12}>
                 <Typography variant="h4" textAlign="center">{walletData?.name}</Typography>
               </Grid>
-              <Grid item xs={12} sx={{ ml: 2 }}>
-                <Grid container component={Paper} spacing={2} elevation={1}>
+              <Grid item xs={12}>
+                <Grid container spacing={2} elevation={1}>
                   <Grid item xs={12}>
                     <Typography variant="h6">Description</Typography>
                   </Grid>
@@ -76,19 +77,24 @@ export default function OneWalletScreen() {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs={12} sx={{ ml: 2 }}>
-                <Grid container component={Paper} spacing={2} elevation={1}>
+              <Grid item xs={12}>
+                <Grid container spacing={2} elevation={1}>
                   <Grid item xs={12}>
                     <Typography variant="h6">Users</Typography>
                   </Grid>
-                  <Grid item xs={12} sx={{ mb: 2 }}>
+                  <Grid item xs={12}>
                     <Grid container spacing={1}>
                       {walletDataLoading
                         ? <LinearProgress />
-                        : walletData && walletData?.access?.map(((user) => (
-                          walletData.access.length === 1
-                            ? <Grid item key={user.id}><Chip variant="outlined" label={user.name} /></Grid>
-                            : <Grid item key={user.id}><Chip variant="outlined" label={user.name} onDelete={() => handleAccessRemove(user.name)} /></Grid>)))}
+                        : walletData && walletData?.access?.map((user) => (
+                          <UserChip
+                            key={user.id}
+                            id={user.id}
+                            name={user.name}
+                            walletData={walletData}
+                            handleAccessRemove={handleAccessRemove}
+                          />
+                        ))}
                       <Grid item>
                         <Chip icon={<AddIcon />} onClick={handleNewUserOpen} variant="outlined" sx={{ minWidth: 50 }} />
                       </Grid>
@@ -102,8 +108,8 @@ export default function OneWalletScreen() {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs={12} sx={{ ml: 2 }}>
-                <Grid container component={Paper} spacing={2} elevation={1}>
+              <Grid item xs={12}>
+                <Grid container spacing={2} elevation={1}>
                   <Grid item xs={12}>
                     <Typography variant="h6">Transactions</Typography>
                   </Grid>
@@ -123,24 +129,22 @@ export default function OneWalletScreen() {
           {hasMore && (
           <Grid item xs={12}>
             <Grid container>
-              <Grid item xs={12} sx={{ ml: 2, mr: 2 }}>
+              <Grid item xs={12}>
                 <Button variant="contained" onClick={onLoadMore} fullWidth>Load more</Button>
               </Grid>
             </Grid>
           </Grid>
           )}
-          <Grid item xs={12} sx={{ m: 2 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
+          <Grid item xs={12} sx={{ pt: 2 }}>
+            <Grid container>
+              <Grid item xs={6} sx={{ pr: 2 }}>
                 <Button variant="contained" onClick={handleNewTranscationOpen} color="success" fullWidth>Add new transaction</Button>
-                {openNewTranscation && (
                 <AddNewTransactionDialog
                   open={openNewTranscation}
                   handleClose={handleNewTranscationClose}
                   id={id}
                   resetTransactionTable={resetTransactionTable}
                 />
-                )}
               </Grid>
               <Grid item xs={6}>
                 <Button onClick={() => navigate('/wallets')} variant="contained" color="error" fullWidth>Back</Button>

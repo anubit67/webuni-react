@@ -10,7 +10,7 @@ export default function TransactionsTable({
   transactionsData, onDelete, resetTransactionTable,
 }) {
   return (
-    <TableContainer sx={{ overflow: 'hidden' }}>
+    <TableContainer sx={{ overflow: 'scroll', display: 'table', tableLayout: 'fixed' }}>
       <Table>
         <TableHead>
           <TableRow>
