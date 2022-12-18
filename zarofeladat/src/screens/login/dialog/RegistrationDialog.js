@@ -76,7 +76,7 @@ export default function RegistrationDialog({ open, onClose }) {
   }
 
   return (
-    <Dialog open={open} onClose={onClose} PaperProps={{ sx: { width: '25%', height: 'auto' } }}>
+    <Dialog open={open} onClose={onClose}>
       <Formik
         initialValues={{
           name: '',

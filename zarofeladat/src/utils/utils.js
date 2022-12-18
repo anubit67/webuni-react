@@ -24,9 +24,19 @@ export function sortByDate(a, b) {
   return 0;
 }
 
-export function validator(value) {
+export function basicValidator(value) {
   if (!value && value.length === 0) {
     return 'Field must not be empty';
+  }
+  return '';
+}
+
+export function numberValidator(value) {
+  if (!value && value.length === 0) {
+    return 'Field must not be empty';
+  }
+  if (Number.isNaN(Number(value))) {
+    return 'Value must be a number';
   }
   return '';
 }

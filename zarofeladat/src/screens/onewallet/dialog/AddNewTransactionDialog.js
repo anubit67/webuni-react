@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Button, Dialog, DialogActions, DialogContent, DialogTitle,
 } from '@mui/material';
@@ -7,7 +6,7 @@ import {
 } from 'formik';
 import { TextField } from 'formik-mui';
 import { AXIOS_METHOD, doApiCall } from '../../../hooks/useApi';
-import { validator } from '../../../utils/utils';
+import { basicValidator, numberValidator } from '../../../utils/utils';
 
 export default function AddNewTransactionDialog({
   open, handleClose, id, resetTransactionTable,
@@ -41,8 +40,8 @@ export default function AddNewTransactionDialog({
         <Form>
           <DialogTitle variant="h5" textAlign="center" fontWeight={500}>Add transaction</DialogTitle>
           <DialogContent>
-            <Field name="title" type="textfield" component={TextField} label="Description" variant="outlined" fullWidth validate={validator} sx={{ pb: 3, mt: 3 }} />
-            <Field name="amount" type="textfield" component={TextField} label="Amount" variant="outlined" fullWidth validate={validator} />
+            <Field name="title" type="textfield" component={TextField} label="Description" variant="outlined" fullWidth validate={basicValidator} sx={{ pb: 3, mt: 3 }} />
+            <Field name="amount" type="textfield" component={TextField} label="Amount" variant="outlined" fullWidth validate={numberValidator} />
           </DialogContent>
           <DialogActions sx={{ pl: 3, pr: 3, pb: 3 }}>
             <Button type="submit" variant="contained" fullWidth>Add</Button>

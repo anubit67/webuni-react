@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Button,
   Chip, Grid, LinearProgress, Paper, Typography,
@@ -84,7 +84,12 @@ export default function OneWalletScreen() {
                 </Grid>
                 <Grid item xs={12} sx={{ mb: 2 }}>
                   <Grid container spacing={1}>
-                    {walletDataLoading ? <LinearProgress /> : walletData && walletData?.access?.map(((user) => <Grid item key={user.id}><Chip variant="outlined" label={user.name} onDelete={() => handleAccessRemove(user.name)} /></Grid>))}
+                    {walletDataLoading
+                      ? <LinearProgress />
+                      : walletData && walletData?.access?.map(((user) => (
+                        walletData.access.length === 1
+                          ? <Grid item key={user.id}><Chip variant="outlined" label={user.name} /></Grid>
+                          : <Grid item key={user.id}><Chip variant="outlined" label={user.name} onDelete={() => handleAccessRemove(user.name)} /></Grid>)))}
                     <Grid item>
                       <Chip icon={<AddIcon />} onClick={handleNewUserOpen} variant="outlined" sx={{ minWidth: 50 }} />
                     </Grid>
@@ -129,12 +134,14 @@ export default function OneWalletScreen() {
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <Button variant="contained" onClick={handleNewTranscationOpen} color="success" fullWidth>Add new transaction</Button>
+              {openNewTranscation && (
               <AddNewTransactionDialog
                 open={openNewTranscation}
                 handleClose={handleNewTranscationClose}
                 id={id}
                 resetTransactionTable={resetTransactionTable}
               />
+              )}
             </Grid>
             <Grid item xs={6}>
               <Button onClick={() => navigate('/wallets')} variant="contained" color="error" fullWidth>Back</Button>

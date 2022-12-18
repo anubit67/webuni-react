@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Button, Dialog, DialogActions, DialogContent, DialogTitle,
 } from '@mui/material';
@@ -7,7 +6,7 @@ import {
 } from 'formik';
 import { TextField } from 'formik-mui';
 import { AXIOS_METHOD, doApiCall } from '../../../hooks/useApi';
-import { validator } from '../../../utils/utils';
+import { basicValidator } from '../../../utils/utils';
 
 export default function AddNewUserDialog({
   open, handleClose, id, forceUsersRefresh,
@@ -46,7 +45,7 @@ export default function AddNewUserDialog({
         <Form>
           <DialogTitle variant="h5" textAlign="center" fontWeight={500}>Add user</DialogTitle>
           <DialogContent>
-            <Field name="name" validate={validator} type="textfield" component={TextField} label="Username" variant="outlined" fullWidth sx={{ mt: 3 }} />
+            <Field name="name" validate={basicValidator} type="textfield" component={TextField} label="Username" variant="outlined" fullWidth sx={{ mt: 3 }} />
           </DialogContent>
           <DialogActions sx={{ pl: 3, pr: 3, pb: 3 }}>
             <Button type="submit" variant="contained" fullWidth>Add</Button>

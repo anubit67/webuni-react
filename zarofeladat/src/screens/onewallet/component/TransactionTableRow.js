@@ -58,12 +58,14 @@ export default function TransactionTableRow({ transaction, resetTransactionTable
             <IconButton onClick={handleModifyTranscationOpen} sx={style}>
               <EditIcon />
             </IconButton>
+            {openModifyTransaction && (
             <ModifyTransactionDialog
               id={id}
               open={openModifyTransaction}
               handleClose={handleModifyTranscationClose}
               resetTransactionTable={resetTransactionTable}
             />
+            )}
             <IconButton onClick={() => onDelete(id)} sx={style}>
               <DeleteIcon />
             </IconButton>

@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
 import {
-  Button, Dialog, DialogActions, DialogContent, DialogTitle,
+  Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Typography,
 } from '@mui/material';
 import {
   Formik, Form, Field,
 } from 'formik';
 import { TextField } from 'formik-mui';
-import { AXIOS_METHOD, doApiCall } from '../../../hooks/useApi';
-import { validator } from '../../../utils/utils';
+import { AXIOS_METHOD, doApiCall, useApi } from '../../../hooks/useApi';
+import { basicValidator, numberValidator } from '../../../utils/utils';
 
 export default function modifyTransactionDialog({
   open, handleClose, id, resetTransactionTable,
 }) {
-  const [initialValues] = useState({ title: '', amount: '' });
+  const [data, loading, error] = useApi(AXIOS_METHOD.GET, `/transaction/${id}`);
 
   function onSubmit({ title, amount }, { setSubmitting, setFieldError }) {
     setSubmitting(true);
@@ -31,17 +30,25 @@ export default function modifyTransactionDialog({
     doApiCall(AXIOS_METHOD.PATCH, `/transaction/${id}`, onSuccess, onFailure, { wallet_id: id, title, amount });
   }
 
+  if (loading) {
+    return <CircularProgress />;
+  }
+
+  if (error) {
+    return <Typography>{error}</Typography>;
+  }
+
   return (
     <Dialog open={open} onClose={handleClose}>
       <Formik
-        initialValues={initialValues}
+        initialValues={{ title: data?.title, amount: data?.amount }}
         onSubmit={onSubmit}
       >
         <Form>
           <DialogTitle variant="h5" textAlign="center" fontWeight={500}>Modify transaction</DialogTitle>
           <DialogContent>
-            <Field name="title" type="textfield" component={TextField} label="Description" variant="outlined" fullWidth validate={validator} sx={{ pb: 3, mt: 3 }} />
-            <Field name="amount" type="textfield" component={TextField} label="Amount" variant="outlined" fullWidth validate={validator} />
+            <Field name="title" type="textfield" component={TextField} label="Description" variant="outlined" fullWidth validate={basicValidator} sx={{ pb: 3, mt: 3 }} />
+            <Field name="amount" type="textfield" component={TextField} label="Amount" variant="outlined" fullWidth validate={numberValidator} />
           </DialogContent>
           <DialogActions sx={{ pl: 3, pr: 3, pb: 3 }}>
             <Button type="submit" variant="contained" fullWidth>Modify</Button>
