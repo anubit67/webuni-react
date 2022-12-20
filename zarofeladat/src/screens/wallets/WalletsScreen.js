@@ -1,8 +1,9 @@
 import {
-  Button, Grid, LinearProgress, Typography,
+  Fab, Grid, IconButton, LinearProgress, Typography,
 } from '@mui/material';
-import { Container } from '@mui/system';
+import { Box, Container } from '@mui/system';
 import { useState } from 'react';
+import AddIcon from '@mui/icons-material/Add';
 import MenuBar from '../../components/MenuBar';
 import Wallet from './component/Wallet';
 import AddWalletDialog from '../../dialogs/AddWalletDialog';
@@ -38,10 +39,10 @@ export default function WalletsScreen({ filterBy }) {
   }
 
   return (
-    <>
+    <Box>
       <MenuBar />
       <Container maxWidth="lg">
-        <Grid container spacing={3} sx={{ pt: 3 }}>
+        <Grid container spacing={3} sx={{ pt: 3, pb: 3 }}>
           {filterBy ? (data && data.filter(filterBy).map((d) => (
             <Wallet
               key={d.id}
@@ -65,23 +66,12 @@ export default function WalletsScreen({ filterBy }) {
               owner={d.created_by.name}
             />
           )))}
-          <Grid item lg={3} md={4} xs={12}>
-            <Button
-              onClick={handleOpen}
-              variant="contained"
-              color="success"
-              fullWidth
-              sx={{
-                height: 225,
-                transition: 'transform .5s, box-shadow 1s',
-                '&:hover': {
-                  transform: 'scale(1.02) perspective(0px)',
-                },
-              }}
-              elevation={2}
-            >
-              <Typography variant="h5">Add new wallet</Typography>
-            </Button>
+          <Grid item lg={3} md={4} xs={12} textAlign="center" sx={{ height: 225 }}>
+            <Fab color="secondary">
+              <IconButton onClick={handleOpen}>
+                <AddIcon />
+              </IconButton>
+            </Fab>
             <AddWalletDialog
               open={open}
               handleClose={handleClose}
@@ -90,6 +80,6 @@ export default function WalletsScreen({ filterBy }) {
           </Grid>
         </Grid>
       </Container>
-    </>
+    </Box>
   );
 }

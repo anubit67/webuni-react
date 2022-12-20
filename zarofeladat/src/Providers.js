@@ -15,6 +15,7 @@ export function useMyTheme() {
 export default function Providers({ children }) {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const [mode, setMode] = useState(prefersDarkMode ? 'dark' : 'light');
+
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
@@ -24,11 +25,38 @@ export default function Providers({ children }) {
     [],
   );
 
+  const lightTheme = {
+    type: 'light',
+    primary: {
+      main: '#8bc34a',
+    },
+    secondary: {
+      main: '#ff9100',
+    },
+    success: {
+      main: '#33691e',
+    },
+    background: {
+      default: '#eeeeee',
+    },
+  };
+
+  const darkTheme = {
+    mode: 'dark',
+    primary: {
+      main: '#8bc34a',
+    },
+    secondary: {
+      main: '#ff9100',
+    },
+    success: {
+      main: '#33691e',
+    },
+  };
+
   const theme = useMemo(
     () => createTheme({
-      palette: {
-        mode,
-      },
+      palette: mode === 'light' ? lightTheme : darkTheme,
       typography: {
         fontFamily: [
           '-apple-system',

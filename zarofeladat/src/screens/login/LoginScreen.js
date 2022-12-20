@@ -77,7 +77,7 @@ export default function LoginScreen() {
                     <Button type="submit" variant="contained" fullWidth>Login</Button>
                   </Grid>
                   <Grid item lg={3} md={4} xs={12}>
-                    <Button variant="contained" color="success" fullWidth onClick={handleClickOpen}>Register</Button>
+                    <Button variant="contained" fullWidth onClick={handleClickOpen}>Register</Button>
                     <RegistrationDialog open={open} onClose={handleClose} />
                   </Grid>
                 </Grid>
