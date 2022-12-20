@@ -22,7 +22,6 @@
         "react/prop-types": "off",
         "react/no-array-index-key": "off",
         "no-plusplus": "off",
-        "react/jsx-no-bind": "off",
         "no-console": "off"
     }
 }

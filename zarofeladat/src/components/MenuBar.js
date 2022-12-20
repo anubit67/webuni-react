@@ -1,5 +1,4 @@
-/* eslint-disable react/jsx-no-bind */
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -30,10 +29,10 @@ function MenuBar() {
     setAnchorEl(null);
   };
 
-  function handleLogout() {
+  const handleLogout = () => {
     logout();
     navigate('/');
-  }
+  };
 
   return (
     <Box>
@@ -72,7 +71,7 @@ function MenuBar() {
                 vertical: 'top',
                 horizontal: 'right',
               }}
-              open={Boolean(anchorEl)}
+              open={!!anchorEl}
               onClose={handleClose}
             >
               <Typography sx={{ p: 1 }} variant="h5" textAlign="center">
