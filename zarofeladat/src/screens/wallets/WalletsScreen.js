@@ -1,5 +1,5 @@
 import {
-  Fab, Grid, IconButton, LinearProgress, Typography,
+  Fab, Grid, LinearProgress, Typography,
 } from '@mui/material';
 import { Box, Container } from '@mui/system';
 import { useState } from 'react';
@@ -39,10 +39,10 @@ export default function WalletsScreen({ filterBy }) {
   }
 
   return (
-    <Box>
+    <Box height="100%">
       <MenuBar />
       <Container maxWidth="lg">
-        <Grid container spacing={3} sx={{ pt: 3, pb: 3 }}>
+        <Grid container spacing={3} sx={{ pt: 4, pb: 23 }}>
           {filterBy ? (data && data.filter(filterBy).map((d) => (
             <Wallet
               key={d.id}
@@ -66,17 +66,27 @@ export default function WalletsScreen({ filterBy }) {
               owner={d.created_by.name}
             />
           )))}
-          <Grid item lg={3} md={4} xs={12} textAlign="center" sx={{ height: 225 }}>
-            <Fab color="secondary">
-              <IconButton onClick={handleOpen}>
+          <Grid container>
+            <Grid
+              item
+              xs={12}
+              position="fixed"
+              sx={{
+                pb: 5,
+                pr: 5,
+                bottom: 0,
+                right: 0,
+              }}
+            >
+              <Fab color="primary" onClick={handleOpen} sx={{ height: 100, width: 100 }}>
                 <AddIcon />
-              </IconButton>
-            </Fab>
-            <AddWalletDialog
-              open={open}
-              handleClose={handleClose}
-              forceWalletRefresh={forceWalletRefresh}
-            />
+              </Fab>
+              <AddWalletDialog
+                open={open}
+                handleClose={handleClose}
+                forceWalletRefresh={forceWalletRefresh}
+              />
+            </Grid>
           </Grid>
         </Grid>
       </Container>

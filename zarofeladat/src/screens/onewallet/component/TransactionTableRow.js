@@ -14,7 +14,7 @@ import ModifyTransactionDialog from '../../../dialogs/ModifyTransactionDialog';
 
 export default function TransactionTableRow({ transaction, resetTransactionTable, onDelete }) {
   const [openModifyTransaction, setModifyTransaction] = useState(false);
-  const [style, setStyle] = useState({ display: 'none' });
+  const [style, setStyle] = useState(DISPLAY_NONE);
   const {
     id, created_by, title, amount, created_at,
   } = transaction;
@@ -33,10 +33,6 @@ export default function TransactionTableRow({ transaction, resetTransactionTable
       key={id}
       sx={{
         height: '75px',
-        transition: 'transform .5s, box-shadow 1s',
-        '&:hover': {
-          transform: 'scale(1.02) perspective(0px)',
-        },
       }}
       onMouseEnter={() => setStyle(DISPLAY_INLINE_FLEX)}
       onMouseLeave={() => setStyle(DISPLAY_NONE)}

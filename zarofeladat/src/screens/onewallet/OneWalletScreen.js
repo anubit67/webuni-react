@@ -131,7 +131,7 @@ export default function OneWalletScreen() {
             <Grid item xs={12} sx={{ pt: 3 }}>
               <Grid container>
                 <Grid item xs={12}>
-                  <Button variant="contained" onClick={onLoadMore} fullWidth>Load more</Button>
+                  <Button variant="contained" color="secondary" onClick={onLoadMore} fullWidth>Load more</Button>
                 </Grid>
               </Grid>
             </Grid>

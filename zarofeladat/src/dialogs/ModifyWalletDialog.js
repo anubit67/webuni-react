@@ -9,7 +9,7 @@ import { AXIOS_METHOD, doApiCall } from '../hooks/useApi';
 import { basicValidator } from '../utils/utils';
 
 export default function ModifyWalletDialog({
-  id, open, handleClose, forceWalletRefresh,
+  id, description, open, handleClose, forceWalletRefresh,
 }) {
   const onSubmit = (values, { setSubmitting, setFieldError }) => {
     setSubmitting(true);
@@ -33,16 +33,15 @@ export default function ModifyWalletDialog({
   }
 
   return (
-    <Dialog open onClose={handleClose}>
+    <Dialog open onClose={handleClose} sx={{ width: '100%' }}>
       <Formik
         initialValues={{
-          name: '',
-          description: '',
+          description,
         }}
         onSubmit={onSubmit}
       >
         <Form>
-          <DialogTitle variant="h5" textAlign="center" fontWeight={500}>Modify wallet</DialogTitle>
+          <DialogTitle variant="h5" textAlign="center" fontWeight={500} fullWidth>Modify wallet description</DialogTitle>
           <DialogContent>
             <Field name="description" type="textfield" component={TextField} label="Description" variant="outlined" multiline rows={4} fullWidth validate={basicValidator} sx={{ mt: 3 }} />
           </DialogContent>

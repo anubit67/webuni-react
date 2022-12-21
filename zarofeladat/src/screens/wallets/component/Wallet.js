@@ -98,6 +98,7 @@ export default function Wallet({
                   </IconButton>
                   <ModifyWalletDialog
                     id={id}
+                    description={description}
                     open={openEdit}
                     handleClose={handleEditClose}
                     forceWalletRefresh={forceWalletRefresh}
