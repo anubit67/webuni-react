@@ -57,7 +57,7 @@ export default function LoginScreen() {
             <Grid item lg={8} md={6} xs={12}>
               <Grid container spacing={2} direction="column">
                 <Grid item lg={3} md={4} xs={12}>
-                  <Typography variant="h2" color="orange" fontWeight={600}>Wallet App</Typography>
+                  <Typography variant="h2" color="primary" fontWeight={600}>Wallet App</Typography>
                 </Grid>
                 <Grid item lg={3} md={4} xs={12}>
                   <Typography variant="h5">Create and share your wallets with your friends to track your financials</Typography>

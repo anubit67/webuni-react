@@ -33,7 +33,7 @@ export default function ModifyWalletDialog({
   }
 
   return (
-    <Dialog open onClose={handleClose} sx={{ width: '100%' }}>
+    <Dialog open onClose={handleClose} sx={{ '& .MuiPaper-root': { width: 600 } }}>
       <Formik
         initialValues={{
           description,
@@ -41,13 +41,13 @@ export default function ModifyWalletDialog({
         onSubmit={onSubmit}
       >
         <Form>
-          <DialogTitle variant="h5" textAlign="center" fontWeight={500} fullWidth>Modify wallet description</DialogTitle>
+          <DialogTitle variant="h5" textAlign="center" fontWeight={500}>Modify wallet</DialogTitle>
           <DialogContent>
             <Field name="description" type="textfield" component={TextField} label="Description" variant="outlined" multiline rows={4} fullWidth validate={basicValidator} sx={{ mt: 3 }} />
           </DialogContent>
           <DialogActions sx={{ pl: 3, pr: 3, pb: 3 }}>
             <Button type="submit" variant="contained" fullWidth>Modify</Button>
-            <Button variant="contained" color="error" fullWidth onClick={handleClose}>Cancel</Button>
+            <Button variant="contained" color="warning" fullWidth onClick={handleClose}>Cancel</Button>
           </DialogActions>
         </Form>
       </Formik>

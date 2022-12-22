@@ -65,7 +65,10 @@ export default function Wallet({
           </Grid>
           <Grid container>
             <Grid item sx={{ width: '100%' }}>
-              <Typography sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+              <Typography sx={{
+                overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', minHeight: '1.5rem',
+              }}
+              >
                 {description}
               </Typography>
             </Grid>

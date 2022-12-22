@@ -13,6 +13,7 @@ import useTransactions from '../../hooks/useTransactions';
 import MenuBar from '../../components/MenuBar';
 import AddNewUserDialog from '../../dialogs/AddUserDialog';
 import UserChip from './component/UserChip';
+import { useAuth } from '../../hooks/useAuth';
 
 export default function OneWalletScreen() {
   const { id } = useParams();
@@ -26,6 +27,7 @@ export default function OneWalletScreen() {
     resetTransactionTable] = useTransactions(id);
   const [openNewUser, setOpenNewUser] = useState(false);
   const [openNewTranscation, setOpenNewTranscation] = useState(false);
+  const { sessionUser } = useAuth();
 
   const handleNewUserOpen = () => {
     setOpenNewUser(true);
@@ -45,7 +47,7 @@ export default function OneWalletScreen() {
 
   const handleAccessRemove = (name) => {
     doApiCall(AXIOS_METHOD.POST, '/user/search', (userId) => {
-      doApiCall(AXIOS_METHOD.POST, `/wallet/${id}/remove_access`, () => refreshWalletData(), false, { user_id: userId });
+      doApiCall(AXIOS_METHOD.POST, `/wallet/${id}/remove_access`, sessionUser.name === name ? () => navigate('/wallets') : () => refreshWalletData(), false, { user_id: userId });
     }, false, { name });
   };
 
@@ -148,7 +150,7 @@ export default function OneWalletScreen() {
                   />
                 </Grid>
                 <Grid item xs={6}>
-                  <Button onClick={() => navigate('/wallets')} variant="contained" color="error" fullWidth>Back</Button>
+                  <Button onClick={() => navigate('/wallets')} variant="contained" color="warning" fullWidth>Back</Button>
                 </Grid>
               </Grid>
             </Grid>
