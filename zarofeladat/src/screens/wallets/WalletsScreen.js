@@ -78,7 +78,7 @@ export default function WalletsScreen({ filterBy }) {
                 right: 0,
               }}
             >
-              <Fab color="primary" onClick={handleOpen} sx={{ height: 100, width: 100 }}>
+              <Fab color="secondary" onClick={handleOpen} sx={{ height: 100, width: 100 }}>
                 <AddIcon />
               </Fab>
               <AddWalletDialog

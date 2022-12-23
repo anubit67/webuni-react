@@ -49,7 +49,7 @@ export default function AddWalletDialog({
           </DialogContent>
           <DialogActions sx={{ pl: 3, pr: 3, pb: 3 }}>
             <Button type="submit" variant="contained" fullWidth>Add</Button>
-            <Button variant="contained" color="error" fullWidth onClick={handleClose}>Cancel</Button>
+            <Button variant="contained" color="secondary" fullWidth onClick={handleClose}>Cancel</Button>
           </DialogActions>
         </Form>
       </Formik>

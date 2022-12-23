@@ -73,7 +73,7 @@ export default function RegistrationDialog({ open, onClose }) {
           </DialogContent>
           <DialogActions sx={{ pl: 3, pr: 3, pb: 3 }}>
             <Button type="Submit" variant="contained" fullWidth>Register</Button>
-            <Button variant="contained" color="error" fullWidth onClick={onClose}>Cancel</Button>
+            <Button variant="contained" color="secondary" fullWidth onClick={onClose}>Cancel</Button>
           </DialogActions>
         </Form>
       </Formik>

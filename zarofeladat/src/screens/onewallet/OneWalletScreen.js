@@ -133,7 +133,7 @@ export default function OneWalletScreen() {
             <Grid item xs={12} sx={{ pt: 3 }}>
               <Grid container>
                 <Grid item xs={12}>
-                  <Button variant="contained" color="secondary" onClick={onLoadMore} fullWidth>Load more</Button>
+                  <Button variant="contained" color="neutral" onClick={onLoadMore} fullWidth>Load more</Button>
                 </Grid>
               </Grid>
             </Grid>
@@ -150,7 +150,7 @@ export default function OneWalletScreen() {
                   />
                 </Grid>
                 <Grid item xs={6}>
-                  <Button onClick={() => navigate('/wallets')} variant="contained" color="warning" fullWidth>Back</Button>
+                  <Button onClick={() => navigate('/wallets')} variant="contained" color="secondary" fullWidth>Back</Button>
                 </Grid>
               </Grid>
             </Grid>
